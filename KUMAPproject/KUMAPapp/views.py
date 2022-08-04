@@ -6,3 +6,7 @@ def index(request):
     entrances = Entrance.objects.all()
     photo = Entrance.objects.all()
     return render(request, 'index.html', {'entrances': entrances})
+
+def search(request):
+    buildingList = Building.objects.all()
+    return render(request, 'search.html', {'buildingList':buildingList})

@@ -33,15 +33,21 @@
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 
 		/* DB 정보 저장 */
-		const buildings = "{{buildings}}";
+		const buildings = {{ buildings|safe }};
+    {% comment %} const buildings = "{{ buildings|safe }}"; {% endcomment %}
+        {% comment %} console.log(buildings)
+        console.log(buildings.replace(/&quot;/g,"\""))
+        a=buildings.replace(/&quot;/g,"\"").replace(/&#x27;/g,'')//.slice(1,-1)
+        console.log(a) {% endcomment %}
         console.log(buildings)
-		const temp1 = JSON.parse(buildings.replace(/&quot;/g,"\""));
-        console.log(temp1)
+		const temp1 = JSON.stringify(buildings);
+        console.log('파싱전',temp1)
+        const temp2 = JSON.parse(temp1)
 		// view에서 받아온 DB담아두기 
         categoryPositions = []
-
+    console.log('파싱후',temp2)
 		/* Building 중심 >> 위도, 경도 좌표 저장 */
-		const buildingLocations  = temp1.map(element => {return  {
+		const buildingLocations  = temp2.map(element => {return  {
 			pk: element.pk,
         	latlng: new kakao.maps.LatLng(element.fields.building_lat, element.fields.building_lon),
           lat: element.fields.building_lat,

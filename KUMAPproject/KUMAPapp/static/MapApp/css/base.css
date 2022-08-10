@@ -52,3 +52,7 @@ body {
 .button-img {
   width: 30%;
 }
+
+.HIDDEN{
+  display: none;
+}

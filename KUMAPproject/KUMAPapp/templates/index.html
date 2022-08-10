@@ -5,10 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<title>🐯KUMAP🐯</title>
     <link rel="stylesheet" type="text/css" href="{% static './MapApp/css/base.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static './css/search.css' %}" />
+
     <link rel="stylesheet" href="static/MapApp/css/index.css">
 </head>
 <body>
     <div id="mapwrap" class="middle">
+        <div class="wrapper hidden" id="search_modal_2">
+            <div class="searchBox">
+                <div class="header">
+                    <h2>목적지 검색</h2>
+                    <input onkeyup="filter()" type="text" id="value" placeholder="목적지를 입력해주세요.">
+                </div>
+                <div class="choice">
+                    {% for building in buildingList %}
+                    <div class="item" onclick="hiddenToggle('{{building.building_name}}')">
+                        <span id="select_building" class="name" style="cursor:pointer;"> {{building.building_name}} </span>
+                    </div>
+                    {% endfor %}
+                </div>   
+            </div>
+          </div>
         <div id="map" style="width:100%;height:100vh;">
             <h2>검색창 임시</h2>
             <div class="scroll__wrap">
@@ -23,7 +40,7 @@
     </div>
     <!-- 지도 위에 표시될 마커 카테고리 -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	19de326d13f32aab18ce3a0096074178"></script>
-	<script>
+	<script type="text/javascript">
 		/* 지도 생성 */
 		var mapContainer = document.getElementById('map');
 		var mapOption = {
@@ -91,7 +108,7 @@
           <div class="bar"></div>
           <div class="button_loc search_btn" style="cursor:pointer;">
             <img src="{% static './images/location.png' %}" class="locationImage">
-            <span>출발지를 입력해주세요!</span>
+            <span id="from_building">출발지를 입력해주세요!</span>
           </div>
           <div class="button_loc">
             <img src="{% static './images/location.png' %}" class="locationImage">
@@ -204,10 +221,37 @@
       function btn_loc(){
         let searching=document.querySelector('.search_btn')
         searching.addEventListener('click',()=>{
-          window.location.href=`http://localhost:8000/search`
+          hiddenToggle('a')
         })
       }
-
+      function filter(){
+        
+                var value, name, item, i;
+        
+                value = document.getElementById("value").value.toUpperCase();
+                item = document.getElementsByClassName("item");
+        
+                for(i=0;i<item.length;i++){
+                  name = item[i].getElementsByClassName("name");
+                  if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
+                    item[i].style.display = "flex";
+                  }else{
+                    item[i].style.display = "none";
+                  }
+                }
+              }
+      let big_modal_2 = document.getElementById('search_modal_2')
+      
+      function hiddenToggle(name){
+        let big_Modal_2 = document.getElementById('search_modal_2')
+        document.getElementById('from_building').innerHTML=`출발지 : ${name}`
+        const clickedClass = "hidden";
+        if (big_Modal_2.classList.contains(clickedClass)) {
+          big_Modal_2.classList.remove(clickedClass);
+        } else {
+          big_Modal_2.classList.add(clickedClass);
+        }
+      }
     </script>
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

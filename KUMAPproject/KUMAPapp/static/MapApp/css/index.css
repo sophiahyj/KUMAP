@@ -75,7 +75,7 @@
     background-image: url("./romance.png");
 }
 
-h2 {
+/* h2 {
     position: absolute;
     z-index: 10;
     left: 20px;
@@ -83,7 +83,7 @@ h2 {
     height: 20px;
     background-color: orange;
 
-}
+} */
 
 h3 {
   font-size: 160%;

@@ -61,3 +61,44 @@ body {
 .HIDDEN{
   display: none;
 }
+.first_search_modal{
+  z-index: 10;
+  width: 90%;
+  height: 50px;
+  position: relative;
+  left: 5%;
+  right: 5%;
+  top: 40px;
+  background-color: white;
+  border: 1px solid rgba(113, 113, 116, 0.22);
+  box-shadow: 12px 26px 50px rgba(90, 108, 234, 0.07);
+  border-radius: 22px;
+  text-align: center;
+  justify-content: flex-start;
+  display: flex;
+ 	flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+.search_font{
+width: 180px;
+height: 27px;
+left: 78px;
+top: 10px;
+
+font-family: 'Post No Bills Colombo Medium';
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+line-height: 27px;
+/* identical to box height */
+
+letter-spacing: 0.5px;
+
+color: rgba(0, 0, 0, 0.5);
+}
+.search_scope{
+  height: 27px;
+  text-align: center;
+  width: 63px;
+}

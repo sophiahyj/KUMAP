@@ -9,6 +9,7 @@ Function views
 Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
@@ -23,10 +24,8 @@ if settings.DEBUG:
     urlpatterns = [
         path('admin/', admin.site.urls),
         path('', views.index, name="index"),
-
         path('category/<int:kind>', views.category, name="category"),
         path('detail_ajax/<int:pk>',views.detail_ajax, name="detail_ajax"),
-
         path('search/', views.search, name='search'),
         path('facility/<int:building_pk>', views.facility, name="facility"),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

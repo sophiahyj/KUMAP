@@ -257,13 +257,18 @@
         }   
         console.log(MarkerStorage)
         
-        
+        function DeleteMarkers(m_array) {
+          m_array.forEach(function(item){
+            item.setMap(null)
+          })
+        }
 
         let cafebtn = document.getElementById('cafeMenu');
         cafebtn.addEventListener('click', ()=>{
           console.log('카페가 제대로 클릭되었어요')
           changeCategory(1)
         })
+      
 
         let resbtn = document.getElementById('resMenu')
         resbtn.addEventListener('click', ()=>{

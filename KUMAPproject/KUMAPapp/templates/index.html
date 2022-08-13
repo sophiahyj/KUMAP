@@ -48,11 +48,11 @@
               <span class="search_font">목적지를 검색하세요</span>
             </div>
             <div class="scroll__wrap">
-                <div class="scroll--element" onclick=""><div>카페</div></div>
-                <div class="scroll--element"><div>식당</div></div>
-                <div class="scroll--element"><div>라운지</div></div>
-                <div class="scroll--element"><div>책반납기</div></div>
-                <div class="scroll--element"><div>프린터</div></div>
+                <div class="scroll--element" id="cafeMenu"><div>카페</div></div>
+                <div class="scroll--element" id="resMenu"><div>식당</div></div>
+                <div class="scroll--element" id="loungeMenu"><div>라운지</div></div>
+                <div class="scroll--element" id="bookMenu"><div>책반납기</div></div>
+                <div class="scroll--element" id="printMenu"><div>프린터</div></div>
             </div>
         </div>
         <div class="modal"></div>
@@ -213,14 +213,69 @@
         modal.innerHTML = template
       }
         /* category 버튼 클릭 시 받아오는 마커 좌표값 비동기 구현 */
-        const changeCafe = () => {
-            fetch('/category', {
-                method: "POST",
+        const changeCategory = (kind) => {
+          if (kind == 1){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTY1/MDAxNjU5NTQ1MzY1OTk3.FPkKlKkdyWb9MZ278pBlrNymusH_CGWPshTggNTzY10g.vt3gYVAhITm4Lk_md5yh74wWRQJrEn-qkKpUeBnoRl0g.PNG.ahrefhoo/coffeMarker.png?type=w966";
+          }
+          else if (kind == 2){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfMTEy/MDAxNjYwMzk5MTQyNDQy.IDdyImo1zXyCsyWUm6APqWP9BZGVmERzn-ajSHhveisg.0qb2Ht5rnRpM5UFu8L7qoZNSzErSpwvniG8BhGsJz2og.PNG.ahrefhoo/resMarker.png?type=w966";
+          }
+          else if (kind == 3){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMjQ1/MDAxNjU5NTQ1MzcxNDMy.Lmu4a7UAs9HmLVpjkKs133pfmV4NJWCvUFclvQYBEQsg.JCT58_NY-6l69dompsgYZxHnGMRXPrWstDcGAaaLnTMg.PNG.ahrefhoo/sofaMarker.png?type=w966";
+          }
+          else if (kind == 4){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTE3/MDAxNjU5NTQ1MzYxNTQy.EUDoV7kVj6e48lsbZl8L08UZtMbm-GKvjpJWltKCCcYg.U2EjflUTJRhFkuAutKOFWvRoV1IgWQ8STeGe6w2gkhYg.PNG.ahrefhoo/bookMarker.png?type=w966";
+          }
+          else if (kind == 5){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfNDYg/MDAxNjYwMzk5MTQyNDU2.INEx4gxaxKfFUG8faigcHbCK_25YMR_tPY1M-c-KAjAg.XExP0IFFQaHj-SdNCRXsTrwpTfzpwiXbgAwm8OZTZAYg.PNG.ahrefhoo/printMarker.png?type=w966";
+          }
+
+          console.log('카테고리 함수가 제대로 작동되었어요')
+          fetch('/category/' + kind, {
+            method: "POST",
+          })
+          .then(response => response.json())
+          .then(res => res['latlng'].forEach(function(item){
+            var imageSize = new kakao.maps.Size(24, 35);
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+            
+            var marker = new kakao.maps.Marker({
+              map: map,
+              position: new kakao.maps.LatLng(item[0], item[1]),
+              image: markerImage
             })
-            .then(response => response.json())
-            .then(res => res['latlng'].forEach(function(item){
-            categoryPositions.push(new kakao.maps.LatLng(item[0], item[1]))
-        }))}
+          }))
+        }   
+
+        let cafebtn = document.getElementById('cafeMenu');
+        cafebtn.addEventListener('click', ()=>{
+          console.log('카페가 제대로 클릭되었어요')
+          changeCategory(1)
+        })
+
+        let resbtn = document.getElementById('resMenu')
+        resbtn.addEventListener('click', ()=>{
+          console.log('식당이 제대로 클릭되었어요')
+          changeCategory(2)
+        })
+
+        let loungebtn = document.getElementById('loungeMenu')
+        loungebtn.addEventListener('click', ()=>{
+          console.log('라운지가 제대로 클릭되었어요')
+          changeCategory(3)
+        })
+
+        let bookbtn = document.getElementById('bookMenu')
+        bookbtn.addEventListener('click', ()=>{
+          console.log('책 반납기가 제대로 클릭되었어요')
+          changeCategory(4)
+        })
+
+        let printerbtn = document.getElementById('printMenu')
+        printerbtn.addEventListener('click', ()=>{
+          console.log('프린터가 제대로 클릭되었어요')
+          changeCategory(5)
+        })
 
 
 

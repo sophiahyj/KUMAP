@@ -27,9 +27,13 @@ def category(request, kind):
     if kind == 1:
         kind = 'cafe'
     elif kind == 2:
-        kind = 'lounge'
+        kind = 'restaurant'
     elif kind == 3:
-        kind = 'book'
+        kind = 'lounge'
+    elif kind == 4:
+        kind = 'book_return'
+    elif kind == 5:
+        kind = 'printer'
 
     if request.method == 'POST':
         facility = serializers.serialize("json", Facility.objects.filter(category = kind))

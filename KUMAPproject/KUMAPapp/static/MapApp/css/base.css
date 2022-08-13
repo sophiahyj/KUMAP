@@ -1,3 +1,8 @@
+h2 {
+  z-index: 10;
+  position: absolute;
+}
+
 .middle {
   width: 100%;
   min-height: 100vh;

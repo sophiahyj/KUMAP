@@ -34,7 +34,8 @@
     position: relative;
     z-index: 10;  
 }
-.scroll--element {
+
+.scroll--element { 
     display: flex;
     min-width: 80px; 
     border-radius: 9999px;

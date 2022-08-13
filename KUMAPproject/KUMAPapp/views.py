@@ -22,7 +22,6 @@ def index(request):
 
 @csrf_exempt
 def category(request, kind):
-    print('아아아아ㅏ아아ㅏ아아아ㅏ아아')
     print(kind)
     if kind == 1:
         kind = 'cafe'
@@ -35,26 +34,32 @@ def category(request, kind):
     elif kind == 5:
         kind = 'printer'
         
-
+    #좀더 효율적으로 바꾸기 바보야
     if request.method == 'POST':
-        facility = serializers.serialize("json", Facility.objects.filter(category = kind))
-        hey = json.loads(facility)
         temp = []
         latlng = []
-        
-        for element in hey:
-            if kind == 6:
-                temp = serializers.serialize("json", Building.objects.all())
-            else:
+
+        #모든 건물 카테고리 버튼을 클릭했을 때
+        if kind == 6:
+            facility = serializers.serialize("json", Building.objects.all())
+            hey = json.loads(facility)
+            for element in hey:
+                latlng.append((element['fields']['building_lat'], element['fields']['building_lon']))
+       
+        #그 외의 카테고리 버튼을 클릭했을 때
+        else:
+            facility = serializers.serialize("json", Facility.objects.filter(category = kind))
+            hey = json.loads(facility)
+            for element in hey:
                 temp = serializers.serialize("json", Building.objects.filter(pk = element['fields']['building_id']))
-            temp = json.loads(temp)[0]['fields']
-            latlng.append((temp['building_lat'], temp['building_lon']))
+                temp = json.loads(temp)[0]['fields']
+                latlng.append((temp['building_lat'], temp['building_lon']))
+
         response = {
             'latlng': latlng
         }
     return HttpResponse(json.dumps(response))
 
-        
 
 def detail_ajax(request, pk):
     post = Building.objects.get(pk=pk)

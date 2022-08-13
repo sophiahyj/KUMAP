@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static './MapApp/css/base.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static './css/search.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="static/MapApp/css/index.css">
+    <link rel="stylesheet" type="text/css" href="{% static './MapApp/css/index.css' %}">
 </head>
 <body>
   
@@ -43,23 +43,32 @@
             </div>
           </div>
         <div id="map" style="width:100%;height:100vh;">
-            <div class="first_search_modal">
-              <span class="material-icons search_scope">search</span>
-              <span class="search_font">목적지를 검색하세요</span>
+            <div class="first_modal_location">
+              <div class="first_search_modal">
+                <span class="material-icons search_scope">search</span>
+                <span class="search_font">목적지를 검색하세요</span>
+              </div>
             </div>
             <div class="scroll__wrap">
+                <div class="scroll--element" id="allMenu"><div>모든 건물</div></div>
                 <div class="scroll--element" id="cafeMenu"><div>카페</div></div>
                 <div class="scroll--element" id="resMenu"><div>식당</div></div>
                 <div class="scroll--element" id="loungeMenu"><div>라운지</div></div>
                 <div class="scroll--element" id="bookMenu"><div>책반납기</div></div>
                 <div class="scroll--element" id="printMenu"><div>프린터</div></div>
-                <div class="scroll--element" id="allMenu"><div>모든 건물</div></div>
             </div>
         </div>
         <div class="modal"></div>
     </div>
     <!-- 지도 위에 표시될 마커 카테고리 -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	19de326d13f32aab18ce3a0096074178"></script>
+kakao.maps.load(function() {
+    // v3가 모두 로드된 후, 이 콜백 함수가 실행됩니다.
+    const  map = new kakao.maps.Map(node, options);
+});
+</script>
+// Parameters
+// callback Function
 	<script type="text/javascript">
 		/* 지도 생성 */
 		var mapContainer = document.getElementById('map');
@@ -73,7 +82,8 @@
 		const buildings = {{ buildings|safe }};
 		const temp1 = JSON.stringify(buildings);
     const temp2 = JSON.parse(temp1)
-	
+		// view에서 받아온 DB담아두기 
+        categoryPositions = []
 		/* Building 중심 >> 위도, 경도 좌표 저장 */
 		const buildingLocations  = temp2.map(element => {return  {
 			    pk: element.pk,
@@ -81,10 +91,12 @@
           lat: element.fields.building_lat,
           long: element.fields.building_lon,
 		      history: element.fields.history,
+          name: element.fields.building_name,
         }} );
 
         // 모든 건물 마커들의 좌푯값 담아두기
         let allPositions = []
+        let allMarkerStorage = []
         buildingLocations.forEach(function(item){
             allPositions.push(item['latlng'])
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
@@ -99,20 +111,33 @@
                 position: item.latlng, // 마커를 표시할 위치
                 image : markerImage // 마커 이미지 
             });
+            allMarkerStorage.push(marker)
             kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
             var latlng = item.latlng;
-            console.log(latlng)
-            console.log('!!!!!')
-            location.href = `javascript:display(${item.pk}); setZoomRange(${latlng.getLat()}, ${latlng.getLng()});`;
+            location.href = `javascript:display(${item.pk}); setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('${item.name}',1)`;
             })
         })
-        function makeSearchmodalGetName(name){
+        function makeSearchmodalGetName(name, state){
           let searchboxname = document.querySelector('.search_font')
+          let firstSearchModal = document.querySelector('.first_modal_location')
+          if(state === 0){
+            firstSearchModal.innerHTML = 
+              `<div class="first_search_modal">
+                <span class="material-icons search_scope">search</span>
+                <span class="search_font">목적지를 검색하세요</span>
+              </div>`
+          }
+          if(state === 1){
+            firstSearchModal.innerHTML = 
+            `<div class="justname">
+              <span class="search_font" style="color: rgba(0,0,0,1)">${name}</span>
+            </div>`
+          }
           searchboxname.innerText = name
         }
         function hiddenToggle1(pk,lat,lon,name){
           let big_Modal_1 = document.getElementById('search_modal_1')
-          makeSearchmodalGetName(name)
+          makeSearchmodalGetName(name,1)
           const clickedClass = "hidden";
           if (big_Modal_1.classList.contains(clickedClass)) {
             big_Modal_1.classList.remove(clickedClass);
@@ -128,10 +153,7 @@
           display(pk);
         }
 
-        for (var i = 0; i < allPositions.length; i ++) {
-    
-            // 마커 이미지의 이미지 크기 입니다
-        }    
+      
         function showSecondModal(name){
         template=`
         <div class="container">
@@ -208,20 +230,32 @@
         function closeModal(){
         template=''
         modal = document.querySelector(".modal")
-        makeSearchmodalGetName('목적지를 검색하세요')
+        makeSearchmodalGetName('목적지를 검색하세요',0)
         modal.innerHTML = template
       }
+
+
+
         let MarkerStorage = []
+       
         /* category 버튼 클릭 시 받아오는 마커 좌표값 비동기 구현 */
-    
         const changeCategory = (kind) => {
-          console.log('함수 실행 후 ---')
-          console.log(MarkerStorage)
+          // var upright = new kakao.maps.LatLng(37.59231422996649, 127.03612010255023), downleft = new kakao.maps.LatLng(37.581505411905574, 127.02395582658365);
+          // var bounds = new kakao.LatLngBounds(upright, downleft);
+          // map.setBounds(bounds)
+
+          //카테고리 클릭한 후 마커들 기준으로 지도 범위 적절하게 재설정
+          map.setLevel(5)
+          map.setCenter(new kakao.maps.LatLng(37.58631, 127.02936))
+
+          /* 기존에 있는 마커를 삭제해줌 */
           MarkerStorage.forEach(function(item){
             item.setMap(null)
           })
-          //성운//
-        
+          allMarkerStorage.forEach(function(item){
+            item.setMap(null)
+          })
+
           if (kind == 1){
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTY1/MDAxNjU5NTQ1MzY1OTk3.FPkKlKkdyWb9MZ278pBlrNymusH_CGWPshTggNTzY10g.vt3gYVAhITm4Lk_md5yh74wWRQJrEn-qkKpUeBnoRl0g.PNG.ahrefhoo/coffeMarker.png?type=w966";
           }
@@ -237,7 +271,10 @@
           else if (kind == 5){
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfNDYg/MDAxNjYwMzk5MTQyNDU2.INEx4gxaxKfFUG8faigcHbCK_25YMR_tPY1M-c-KAjAg.XExP0IFFQaHj-SdNCRXsTrwpTfzpwiXbgAwm8OZTZAYg.PNG.ahrefhoo/printMarker.png?type=w966";
           }
-          // 이 --- 이 // 
+          else if (kind == 6){
+            imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+          }
+
           console.log('카테고리 함수가 제대로 작동되었어요')
           fetch('/category/' + kind, {
             method: "POST",
@@ -246,7 +283,6 @@
           .then(res => res['latlng'].forEach(function(item){
             var imageSize = new kakao.maps.Size(24, 35);
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-          
             var marker = new kakao.maps.Marker({
               map: map,
               position: new kakao.maps.LatLng(item[0], item[1]),
@@ -255,13 +291,6 @@
             MarkerStorage.push(marker)
           }))
         }   
-        console.log(MarkerStorage)
-        
-        function DeleteMarkers(m_array) {
-          m_array.forEach(function(item){
-            item.setMap(null)
-          })
-        }
 
         let cafebtn = document.getElementById('cafeMenu');
         cafebtn.addEventListener('click', ()=>{
@@ -301,9 +330,9 @@
         })
 
         function setZoomRange(lat, lng) {
+          map.setLevel(2);
           var moveLatLon = new kakao.maps.LatLng(lat, lng);
           map.panTo(moveLatLon);
-        
       }    
         
         
@@ -330,7 +359,7 @@
                 }
               }
       let big_modal_2 = document.getElementById('search_modal_2')
-      let finding_btn = document.querySelector('.first_search_modal')
+      let finding_btn = document.querySelector('.first_modal_location')
       finding_btn.addEventListener('click',()=>{
         document.getElementById('search_modal_1').classList.toggle('hidden')
       })

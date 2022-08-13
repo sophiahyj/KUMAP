@@ -33,6 +33,7 @@ def category(request, kind):
         kind = 'book_return'
     elif kind == 5:
         kind = 'printer'
+        
 
     if request.method == 'POST':
         facility = serializers.serialize("json", Facility.objects.filter(category = kind))
@@ -41,7 +42,10 @@ def category(request, kind):
         latlng = []
         
         for element in hey:
-            temp = serializers.serialize("json", Building.objects.filter(pk = element['fields']['building_id']))
+            if kind == 6:
+                temp = serializers.serialize("json", Building.objects.all())
+            else:
+                temp = serializers.serialize("json", Building.objects.filter(pk = element['fields']['building_id']))
             temp = json.loads(temp)[0]['fields']
             latlng.append((temp['building_lat'], temp['building_lon']))
         response = {

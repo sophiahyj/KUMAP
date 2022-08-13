@@ -20,7 +20,7 @@
                 </div>
                 <div class="choice">
                     {% for building in buildingList %}
-                    <div class="item" onclick="hiddenToggle1('{{building.building_name}}')">
+                    <div class="item" onclick="hiddenToggle1('{{building.pk}}','{{building.building_lat}}','{{building.building_lon}}','{{building.building_name}}')">
                         <span id="select_building" class="name" style="cursor:pointer;"> {{building.building_name}} </span>
                     </div>
                     {% endfor %}
@@ -53,6 +53,7 @@
                 <div class="scroll--element" id="loungeMenu"><div>라운지</div></div>
                 <div class="scroll--element" id="bookMenu"><div>책반납기</div></div>
                 <div class="scroll--element" id="printMenu"><div>프린터</div></div>
+                <div class="scroll--element" id="allMenu"><div>모든 건물</div></div>
             </div>
         </div>
         <div class="modal"></div>
@@ -70,18 +71,9 @@
 
 		/* DB 정보 저장 */
 		const buildings = {{ buildings|safe }};
-    {% comment %} const buildings = "{{ buildings|safe }}"; {% endcomment %}
-        {% comment %} console.log(buildings)
-        console.log(buildings.replace(/&quot;/g,"\""))
-        a=buildings.replace(/&quot;/g,"\"").replace(/&#x27;/g,'')//.slice(1,-1)
-        console.log(a) {% endcomment %}
-        console.log(buildings)
 		const temp1 = JSON.stringify(buildings);
-        console.log('파싱전',temp1)
-        const temp2 = JSON.parse(temp1)
-		// view에서 받아온 DB담아두기 
-        categoryPositions = []
-    console.log('파싱후',temp2)
+    const temp2 = JSON.parse(temp1)
+	
 		/* Building 중심 >> 위도, 경도 좌표 저장 */
 		const buildingLocations  = temp2.map(element => {return  {
 			    pk: element.pk,
@@ -108,25 +100,32 @@
                 image : markerImage // 마커 이미지 
             });
             kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
-          // console.log({pk: position})   
             var latlng = item.latlng;
             console.log(latlng)
             console.log('!!!!!')
             location.href = `javascript:display(${item.pk}); setZoomRange(${latlng.getLat()}, ${latlng.getLng()});`;
             })
         })
-
-        function hiddenToggle1(name){
-          const to_building=allPositions.filter(function(element){
-            return element.
-          })
+        function makeSearchmodalGetName(name){
+          let searchboxname = document.querySelector('.search_font')
+          searchboxname.innerText = name
+        }
+        function hiddenToggle1(pk,lat,lon,name){
           let big_Modal_1 = document.getElementById('search_modal_1')
+          makeSearchmodalGetName(name)
           const clickedClass = "hidden";
           if (big_Modal_1.classList.contains(clickedClass)) {
             big_Modal_1.classList.remove(clickedClass);
           } else {
             big_Modal_1.classList.add(clickedClass);
           }
+          const buildingLocation = {
+            pk: pk,
+            latlng: new kakao.maps.LatLng(lat,lon),
+          }
+          var latlng = buildingLocation.latlng
+          setZoomRange(latlng.getLat(), latlng.getLng())
+          display(pk);
         }
 
         for (var i = 0; i < allPositions.length; i ++) {
@@ -157,21 +156,19 @@
       
       function grab_etr(){
         var etr_btn = document.querySelector('.etrance_btn')
-        console.log(etr_btn)
+        
         etr_btn.addEventListener('click',()=>{
           str_str_btn = String(etr_btn.id)
           var result3 = str_str_btn.slice(9);
-          console.log(result3)
+          
           window.location.href=`http://localhost:8000/entrance/${result3}`
         })
       }
       function grab_fac(){
         var etr_btn = document.querySelector('.facility_btn')
-        console.log(etr_btn)
         etr_btn.addEventListener('click',()=>{
           str_str_btn = String(etr_btn.id)
           var result3 = str_str_btn.slice(9);
-          console.log(result3)
           window.location.href=`http://localhost:8000/facility/${result3}`
         })
       }
@@ -183,7 +180,6 @@
             type: "GET",
             dataType: "json",
             success: (data) => {
-                console.log(data)
                 const num=data.pk
                 template = 
                 `<div class="container">
@@ -212,10 +208,20 @@
         function closeModal(){
         template=''
         modal = document.querySelector(".modal")
+        makeSearchmodalGetName('목적지를 검색하세요')
         modal.innerHTML = template
       }
+        let MarkerStorage = []
         /* category 버튼 클릭 시 받아오는 마커 좌표값 비동기 구현 */
+    
         const changeCategory = (kind) => {
+          console.log('함수 실행 후 ---')
+          console.log(MarkerStorage)
+          MarkerStorage.forEach(function(item){
+            item.setMap(null)
+          })
+          //성운//
+        
           if (kind == 1){
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTY1/MDAxNjU5NTQ1MzY1OTk3.FPkKlKkdyWb9MZ278pBlrNymusH_CGWPshTggNTzY10g.vt3gYVAhITm4Lk_md5yh74wWRQJrEn-qkKpUeBnoRl0g.PNG.ahrefhoo/coffeMarker.png?type=w966";
           }
@@ -231,7 +237,7 @@
           else if (kind == 5){
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfNDYg/MDAxNjYwMzk5MTQyNDU2.INEx4gxaxKfFUG8faigcHbCK_25YMR_tPY1M-c-KAjAg.XExP0IFFQaHj-SdNCRXsTrwpTfzpwiXbgAwm8OZTZAYg.PNG.ahrefhoo/printMarker.png?type=w966";
           }
-
+          // 이 --- 이 // 
           console.log('카테고리 함수가 제대로 작동되었어요')
           fetch('/category/' + kind, {
             method: "POST",
@@ -240,14 +246,18 @@
           .then(res => res['latlng'].forEach(function(item){
             var imageSize = new kakao.maps.Size(24, 35);
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-            
+          
             var marker = new kakao.maps.Marker({
               map: map,
               position: new kakao.maps.LatLng(item[0], item[1]),
               image: markerImage
             })
+            MarkerStorage.push(marker)
           }))
         }   
+        console.log(MarkerStorage)
+        
+        
 
         let cafebtn = document.getElementById('cafeMenu');
         cafebtn.addEventListener('click', ()=>{
@@ -279,30 +289,15 @@
           changeCategory(5)
         })
 
+        let allbtn = document.getElementById('allMenu')
+        allbtn.addEventListener('click', ()=>{
+          console.log('모든 건물이 제대로 클릭되었어요')
+          changeCategory(6)
+        })
 
-
-     
-
-        var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTY1/MDAxNjU5NTQ1MzY1OTk3.FPkKlKkdyWb9MZ278pBlrNymusH_CGWPshTggNTzY10g.vt3gYVAhITm4Lk_md5yh74wWRQJrEn-qkKpUeBnoRl0g.PNG.ahrefhoo/coffeMarker.png?type=w966"; 
-
-        for (var i = 0; i < categoryPositions.length; i ++) {
-    
-            // 마커 이미지의 이미지 크기 입니다
-            var imageSize = new kakao.maps.Size(24, 35); 
-            
-            // 마커 이미지를 생성합니다    
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-            
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-                map: map, // 마커를 표시할 지도
-                position: categoryPositions[i], // 마커를 표시할 위치
-                image : markerImage // 마커 이미지 
-            });
-        }
         function setZoomRange(lat, lng) {
           var moveLatLon = new kakao.maps.LatLng(lat, lng);
-        map.panTo(moveLatLon);
+          map.panTo(moveLatLon);
         
       }    
         
@@ -332,7 +327,7 @@
       let big_modal_2 = document.getElementById('search_modal_2')
       let finding_btn = document.querySelector('.first_search_modal')
       finding_btn.addEventListener('click',()=>{
-        hiddenToggle1()
+        document.getElementById('search_modal_1').classList.toggle('hidden')
       })
       function hiddenToggle(name){
         let big_Modal_2 = document.getElementById('search_modal_2')

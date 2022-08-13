@@ -22,7 +22,6 @@ def index(request):
 
 @csrf_exempt
 def category(request, kind):
-    print('아아아아ㅏ아아ㅏ아아아ㅏ아아')
     print(kind)
     if kind == 1:
         kind = 'cafe'

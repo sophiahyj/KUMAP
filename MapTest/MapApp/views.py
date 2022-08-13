@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.core import serializers
 from urllib import response
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 import json
 # (https://han-py.tistory.com/356 사용법)
 from .models import Building, Entrance, Facility
@@ -18,7 +18,7 @@ def index(request):
     facilities = serializers.serialize('json', Facility.objects.all())
 
 
-    return render(request, "index.html", {"buildingList": buildingList, "buildings": buildings, "facilityList": facilityList, "facilities":facilities, })
+    return render(request, "MapApp/index.html", {"buildingList": buildingList, "buildings": buildings, "facilityList": facilityList, "facilities":facilities, })
 
 @csrf_exempt
 def category(request, kind):
@@ -27,13 +27,9 @@ def category(request, kind):
     if kind == 1:
         kind = 'cafe'
     elif kind == 2:
-        kind = 'restaurant'
-    elif kind == 3:
         kind = 'lounge'
-    elif kind == 4:
-        kind = 'book_return'
-    elif kind == 5:
-        kind = 'printer'
+    elif kind == 3:
+        kind = 'book'
 
     if request.method == 'POST':
         facility = serializers.serialize("json", Facility.objects.filter(category = kind))
@@ -52,22 +48,7 @@ def category(request, kind):
 
         
 
-def detail_ajax(request, pk):
-    post = Building.objects.get(pk=pk)
-    data = {
-        'name': post.building_name,
-        'pk': pk,
-    }
-    #print(data)
-    return JsonResponse(data)
 
 
-def search(request):
-    buildingList = Building.objects.all()
-    return render(request, 'search.html', {'buildingList':buildingList})
+   
 
-def facility(request, building_pk):
-    building = Building.objects.get(pk = building_pk)
-    facilities = Facility.objects.filter(building_id = building_pk)
-
-    return render(request, 'facility.html', {'building': building, 'facilities': facilities})

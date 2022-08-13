@@ -1,21 +1,320 @@
+<html>
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Document</title>
+	<meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>🐯KUMAP🐯</title>
+    <link rel="stylesheet" type="text/css" href="{% static './MapApp/css/base.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static './css/search.css' %}" />
+
+    <link rel="stylesheet" href="static/MapApp/css/index.css">
 </head>
 <body>
-    <h2>시범</h2>
-    {% for entrance in entrances %}
-        <div class="photo">
-            <a>{{entrance.photo}}</a>
+    <div id="mapwrap" class="middle">
+        <div class="wrapper hidden" id="search_modal_2">
+            <div class="searchBox">
+                <div class="header">
+                    <h2>목적지 검색</h2>
+                    <input onkeyup="filter()" type="text" id="value" placeholder="목적지를 입력해주세요.">
+                </div>
+                <div class="choice">
+                    {% for building in buildingList %}
+                    <div class="item" onclick="hiddenToggle('{{building.building_name}}')">
+                        <span id="select_building" class="name" style="cursor:pointer;"> {{building.building_name}} </span>
+                    </div>
+                    {% endfor %}
+                </div>   
+            </div>
+          </div>
+        <div id="map" style="width:100%;height:100vh;">
+            <h2>검색창 임시</h2>
+            <div class="scroll__wrap">
+                <div class="scroll--element" id="cafeMenu"><div>카페</div></div>
+                <div class="scroll--element" id="resMenu"><div>식당</div></div>
+                <div class="scroll--element" id="loungeMenu"><div>라운지</div></div>
+                <div class="scroll--element" id="bookMenu"><div>책반납기</div></div>
+                <div class="scroll--element" id="printMenu"><div>프린터</div></div>
+            </div>
         </div>
-    {% endfor %}
+        <div class="modal"></div>
+    </div>
+    <!-- 지도 위에 표시될 마커 카테고리 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	19de326d13f32aab18ce3a0096074178"></script>
+	<script type="text/javascript">
+		/* 지도 생성 */
+		var mapContainer = document.getElementById('map');
+		var mapOption = {
+			center: new kakao.maps.LatLng(37.58631, 127.02936),
+			level: 4
+		}
+		var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    <img src="{% static entrance.photo %}">
+		/* DB 정보 저장 */
+		const buildings = {{ buildings|safe }};
+    {% comment %} const buildings = "{{ buildings|safe }}"; {% endcomment %}
+        {% comment %} console.log(buildings)
+        console.log(buildings.replace(/&quot;/g,"\""))
+        a=buildings.replace(/&quot;/g,"\"").replace(/&#x27;/g,'')//.slice(1,-1)
+        console.log(a) {% endcomment %}
+        console.log(buildings)
+		const temp1 = JSON.stringify(buildings);
+        console.log('파싱전',temp1)
+        const temp2 = JSON.parse(temp1)
+		// view에서 받아온 DB담아두기 
+        categoryPositions = []
+    console.log('파싱후',temp2)
+		/* Building 중심 >> 위도, 경도 좌표 저장 */
+		const buildingLocations  = temp2.map(element => {return  {
+			pk: element.pk,
+        	latlng: new kakao.maps.LatLng(element.fields.building_lat, element.fields.building_lon),
+          lat: element.fields.building_lat,
+          long: element.fields.building_lon,
+		  history: element.fields.history,
+        }} );
+
+        // 모든 건물 마커들의 좌푯값 담아두기
+        let allPositions = []
+        buildingLocations.forEach(function(item){
+            allPositions.push(item['latlng'])
+            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+            var imageSize = new kakao.maps.Size(24, 35); 
+            
+            // 마커 이미지를 생성합니다    
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+            
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: item.latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+            kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+          // console.log({pk: position})   
+            var latlng = item.latlng;
+            location.href = `javascript:display(${item.pk}); setZoomRange(${latlng.getLat()}, ${latlng.getLng()});`;
+            })
+        })
+
+        for (var i = 0; i < allPositions.length; i ++) {
+    
+            // 마커 이미지의 이미지 크기 입니다
+        }    
+        function showSecondModal(name){
+        template=`
+        <div class="container">
+          <img src="{% static './images/close_button.png' %}" class="closeButton" onclick="closeModal()">
+          <h3>이동경로 검색</h3>
+          <p class="address" style="margin-top:0px;">도보 기준 이동경로 및 시간을 계산합니다.</p>
+          <div class="bar"></div>
+          <div class="button_loc search_btn" style="cursor:pointer;">
+            <img src="{% static './images/location.png' %}" class="locationImage">
+            <span id="from_building">출발지를 입력해주세요!</span>
+          </div>
+          <div class="button_loc">
+            <img src="{% static './images/location.png' %}" class="locationImage">
+            <span>목적지: ${name}</span>
+          </div>
+          <a class="button_main">이동경로 검색</a>
+        </div>`
+        modal = document.querySelector(".modal")
+        modal.innerHTML = template
+        btn_loc()
+      }
+      
+      function grab_etr(){
+        var etr_btn = document.querySelector('.etrance_btn')
+        console.log(etr_btn)
+        etr_btn.addEventListener('click',()=>{
+          str_str_btn = String(etr_btn.id)
+          var result3 = str_str_btn.slice(9);
+          console.log(result3)
+          window.location.href=`http://localhost:8000/entrance/${result3}`
+        })
+      }
+      function grab_fac(){
+        var etr_btn = document.querySelector('.facility_btn')
+        console.log(etr_btn)
+        etr_btn.addEventListener('click',()=>{
+          str_str_btn = String(etr_btn.id)
+          var result3 = str_str_btn.slice(9);
+          console.log(result3)
+          window.location.href=`http://localhost:8000/facility/${result3}`
+        })
+      }
+      function showFirstModal(schoolPk){
+            if (schoolPk != null){
+            $.ajax({
+            url: "detail_ajax/"+schoolPk,
+            async: false,
+            type: "GET",
+            dataType: "json",
+            success: (data) => {
+                console.log(data)
+                const num=data.pk
+                template = 
+                `<div class="container">
+                    <img src="{% static './images/close_button.png' %}" class="closeButton" onclick="closeModal()">
+                    <h3>` + data.name + `</h3>
+                    <p class="address" style="margin-top:0px;"></p>
+                    <div class="bar"></div>
+                    <a class="button_main" onclick="showSecondModal('` +data.name +`')">목적지 설정</a>
+                    <p id="entrance_${data.pk}" class="button_else etrance_btn">건물 출입구 확인하기</p>
+                    <p id="facility_${data.pk}" class="button_else facility_btn">건물 내 시설 확인하기</p>
+                </div>`               
+                },
+                error: (error) => {
+                console.log(error);
+                }
+            });
+            modal = document.querySelector(".modal")
+            modal.innerHTML = template
+            grab_etr()
+            grab_fac()
+            }
+        }
+        function display(pk) {
+          showFirstModal(pk);
+        }
+        function closeModal(){
+        template=''
+        modal = document.querySelector(".modal")
+        modal.innerHTML = template
+      }
+        /* category 버튼 클릭 시 받아오는 마커 좌표값 비동기 구현 */
+        const changeCategory = (kind) => {
+          if (kind == 1){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTY1/MDAxNjU5NTQ1MzY1OTk3.FPkKlKkdyWb9MZ278pBlrNymusH_CGWPshTggNTzY10g.vt3gYVAhITm4Lk_md5yh74wWRQJrEn-qkKpUeBnoRl0g.PNG.ahrefhoo/coffeMarker.png?type=w966";
+          }
+          else if (kind == 2){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfMTEy/MDAxNjYwMzk5MTQyNDQy.IDdyImo1zXyCsyWUm6APqWP9BZGVmERzn-ajSHhveisg.0qb2Ht5rnRpM5UFu8L7qoZNSzErSpwvniG8BhGsJz2og.PNG.ahrefhoo/resMarker.png?type=w966";
+          }
+          else if (kind == 3){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMjQ1/MDAxNjU5NTQ1MzcxNDMy.Lmu4a7UAs9HmLVpjkKs133pfmV4NJWCvUFclvQYBEQsg.JCT58_NY-6l69dompsgYZxHnGMRXPrWstDcGAaaLnTMg.PNG.ahrefhoo/sofaMarker.png?type=w966";
+          }
+          else if (kind == 4){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTE3/MDAxNjU5NTQ1MzYxNTQy.EUDoV7kVj6e48lsbZl8L08UZtMbm-GKvjpJWltKCCcYg.U2EjflUTJRhFkuAutKOFWvRoV1IgWQ8STeGe6w2gkhYg.PNG.ahrefhoo/bookMarker.png?type=w966";
+          }
+          else if (kind == 5){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfNDYg/MDAxNjYwMzk5MTQyNDU2.INEx4gxaxKfFUG8faigcHbCK_25YMR_tPY1M-c-KAjAg.XExP0IFFQaHj-SdNCRXsTrwpTfzpwiXbgAwm8OZTZAYg.PNG.ahrefhoo/printMarker.png?type=w966";
+          }
+
+          console.log('카테고리 함수가 제대로 작동되었어요')
+          fetch('/category/' + kind, {
+            method: "POST",
+          })
+          .then(response => response.json())
+          .then(res => res['latlng'].forEach(function(item){
+            var imageSize = new kakao.maps.Size(24, 35);
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+            
+            var marker = new kakao.maps.Marker({
+              map: map,
+              position: new kakao.maps.LatLng(item[0], item[1]),
+              image: markerImage
+            })
+          }))
+        }   
+
+        let cafebtn = document.getElementById('cafeMenu');
+        cafebtn.addEventListener('click', ()=>{
+          console.log('카페가 제대로 클릭되었어요')
+          changeCategory(1)
+        })
+
+        let resbtn = document.getElementById('resMenu')
+        resbtn.addEventListener('click', ()=>{
+          console.log('식당이 제대로 클릭되었어요')
+          changeCategory(2)
+        })
+
+        let loungebtn = document.getElementById('loungeMenu')
+        loungebtn.addEventListener('click', ()=>{
+          console.log('라운지가 제대로 클릭되었어요')
+          changeCategory(3)
+        })
+
+        let bookbtn = document.getElementById('bookMenu')
+        bookbtn.addEventListener('click', ()=>{
+          console.log('책 반납기가 제대로 클릭되었어요')
+          changeCategory(4)
+        })
+
+        let printerbtn = document.getElementById('printMenu')
+        printerbtn.addEventListener('click', ()=>{
+          console.log('프린터가 제대로 클릭되었어요')
+          changeCategory(5)
+        })
+
+
+
+     
+
+        var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTY1/MDAxNjU5NTQ1MzY1OTk3.FPkKlKkdyWb9MZ278pBlrNymusH_CGWPshTggNTzY10g.vt3gYVAhITm4Lk_md5yh74wWRQJrEn-qkKpUeBnoRl0g.PNG.ahrefhoo/coffeMarker.png?type=w966"; 
+
+        for (var i = 0; i < categoryPositions.length; i ++) {
+    
+            // 마커 이미지의 이미지 크기 입니다
+            var imageSize = new kakao.maps.Size(24, 35); 
+            
+            // 마커 이미지를 생성합니다    
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+            
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: categoryPositions[i], // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+        }
+        function setZoomRange(lat, lng) {
+          var moveLatLon = new kakao.maps.LatLng(lat, lng);
+        map.panTo(moveLatLon);
+        
+      }    
+        
+        
+      function btn_loc(){
+        let searching=document.querySelector('.search_btn')
+        searching.addEventListener('click',()=>{
+          hiddenToggle('a')
+        })
+      }
+      function filter(){
+        
+                var value, name, item, i;
+        
+                value = document.getElementById("value").value.toUpperCase();
+                item = document.getElementsByClassName("item");
+        
+                for(i=0;i<item.length;i++){
+                  name = item[i].getElementsByClassName("name");
+                  if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
+                    item[i].style.display = "flex";
+                  }else{
+                    item[i].style.display = "none";
+                  }
+                }
+              }
+      let big_modal_2 = document.getElementById('search_modal_2')
+      
+      function hiddenToggle(name){
+        let big_Modal_2 = document.getElementById('search_modal_2')
+        document.getElementById('from_building').innerHTML=`출발지 : ${name}`
+        const clickedClass = "hidden";
+        if (big_Modal_2.classList.contains(clickedClass)) {
+          big_Modal_2.classList.remove(clickedClass);
+        } else {
+          big_Modal_2.classList.add(clickedClass);
+        }
+      }
+    </script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2MXZH0045R');
+    </script>
 </body>
 </html>

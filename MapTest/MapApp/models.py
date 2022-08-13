@@ -1,3 +1,5 @@
+from distutils.command.build import build
+from fileinput import filename
 from django.db import models
 
 # Create your models here.
@@ -11,40 +13,37 @@ class Building(models.Model):
         return self.building_name
 
 def directory(building_name, filename):
-    return 'static/image/{}/{}'.format(building_name, filename)
+    return 'user_{}/{}'.format(building_name, filename)
 
 class Entrance(models.Model):
-    building_id = models.ForeignKey(Building, on_delete=models.CASCADE)
+    building_id = models.ForeignKey('Building', on_delete=models.CASCADE)
+
 
     entrance_name = models.CharField(max_length=50)
-    entrance_time1 = models.TimeField(auto_now=False, auto_now_add=False, null=True)
-    entrance_time2 = models.TextField(null=True)
+    entrance_time1 = models.TimeField(auto_now=False, auto_now_add=False)
+    entrance_time2 = models.TextField()
     entrance_lat = models.FloatField(default=0.0)   
     entrance_lon = models.FloatField(default=0.0)
-    entrance_num = models.IntegerField(null=True)
-    # entrance_photo = models.ImageField(null=True, upload_to="static/image/{id}".format(id = building_id), blank=True)
-    entrance_photo = models.ImageField(null=True, upload_to=directory, blank=True)
+  
 
     
     def __str__(self):
-        return self.building_id.building_name
+        return self.entrance_name
 
 FACILITY_CHOICES = (
-        ('cafe', '카페'),
-        ('restaurant', '식당'),
-        ('one-stop', '원스톱'),
-        ('book_return', '책반납기'),
-        ('printer', '프린터'),
-        ('lounge', '스터디'),
+        ('cafe', 'cafe'),
+        ('restaurant', 'restaurant'),
+        ('one-stop', 'one-stop'),
+        ('book_return', 'book_return'),
+        ('printer', 'printer'),
+        ('lounge', 'lounge'),
     )
 
 class Facility(models.Model):
     building_id = models.ForeignKey(Building, on_delete=models.CASCADE)
-
-
     category = models.CharField(max_length=20, choices=FACILITY_CHOICES)
     facility_name = models.CharField(max_length=50)
-    facility_loc = models.TextField(null=True)
+    facility_loc = models.TextField()
 
     def __str__(self):
         return self.facility_name

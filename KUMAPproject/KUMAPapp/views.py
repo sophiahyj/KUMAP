@@ -11,7 +11,7 @@ from .models import Building, Entrance, Facility
 
 # Create your views here.
 def index(request):
-    buildingList =  Building.objects.order_by('building_name')
+    buildingList = Building.objects.all()
     buildings = serializers.serialize('json', Building.objects.all())
 
     facilityList = Facility.objects.all()
@@ -65,7 +65,6 @@ def category(request, kind):
         }
     return HttpResponse(json.dumps(response))
 
-
 def detail_ajax(request, pk):
     post = Building.objects.get(pk=pk)
     data = {
@@ -85,6 +84,17 @@ def facility(request, building_pk):
     facilities = Facility.objects.filter(building_id = building_pk)
 
     return render(request, 'facility.html', {'building': building, 'facilities': facilities})
+
+def entrance(request, building_pk):
+    buildingslists = Building.objects.get(pk = building_pk)
+    entrances = Entrance.objects.filter(building_id = building_pk)
+    schoolj = serializers.serialize('json', [Building.objects.filter(pk=building_pk)[0]])
+    doorsj = serializers.serialize('json', Entrance.objects.filter(building_id=building_pk))
+
+    return render(request, 'entrance.html', {'buildingslists': buildingslists, 'entrances': entrances, 'schoolj': schoolj, 'doorsj': doorsj})
+
+def first(request):
+    return render(request, 'first.html')
 
 @csrf_exempt
 def time(request, from_building, to_building):

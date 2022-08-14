@@ -36,6 +36,7 @@
 }
 
 .scroll--element { 
+    cursor: pointer;
     display: flex;
     min-width: 80px; 
     border-radius: 9999px;

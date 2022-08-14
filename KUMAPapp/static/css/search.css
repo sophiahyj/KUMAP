@@ -1,0 +1,63 @@
+.wrapper {
+    background-color: white;
+    position: absolute;
+    left:0;
+    top: 0;
+    z-index: 20;
+    width: calc(100% - 48px);
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.searchBox {
+    margin: 20px 0;
+    align-items: center;
+    text-align: center;
+    font-weight:bolder;
+    font-size: 150%;
+}
+
+.header{
+    background: #ffffff;
+    overflow: hidden;
+    padding: 20px 0 10px 0;
+    text-align: center;
+  }
+  .header h2{
+    text-transform: uppercase;
+    color: black;
+    margin: 0;
+    top:20px;
+    margin-bottom: 5px;
+  }
+  #value{
+    border: none;
+    background: rgb(240, 238, 238);
+    padding: 10px;
+    font-size: 18px;
+    width: 80%;
+    margin-top: 10px;
+    border-radius: 6px;
+    color: black;
+  }
+  #value:focus{
+    outline: none;
+  }
+
+/* 선택지 창 */
+  .choice{
+    background: white;
+    padding: 2vh 5% 10vh 5%;
+    overflow-y: scroll;
+  }
+  .item{
+    margin: 3% 0px;
+    display: flex;
+    align-items: center;
+  }
+  .name{
+    font-size: 17px;
+    font-weight: 470;
+    color: #333;
+    text-decoration-line : none;
+  }

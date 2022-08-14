@@ -39,8 +39,7 @@ def category(request, kind):
     #좀더 효율적으로 바꾸기 바보야
     if request.method == 'POST':
         temp = []
-        latlng = []
-        # setData = []
+        setData = []
 
 
         #모든 건물 카테고리 버튼을 클릭했을 때
@@ -48,7 +47,7 @@ def category(request, kind):
             facility = serializers.serialize("json", Building.objects.all())
             hey = json.loads(facility)
             for element in hey:
-                latlng.append((element['fields']['building_lat'], element['fields']['building_lon']))
+                setData.append((element['fields']['building_lat'], element['fields']['building_lon']))
        
         #그 외의 카테고리 버튼을 클릭했을 때
         else:
@@ -56,13 +55,13 @@ def category(request, kind):
             hey = json.loads(facility)
             for element in hey:
                 temp = serializers.serialize("json", Building.objects.filter(pk = element['fields']['building_id']))
-                temp = json.loads(temp)[0]['fields']
-                # setData.appen
-                latlng.append((temp['building_lat'], temp['building_lon']))
+                temp = json.loads(temp)[0]
+                setData.append((temp['pk'], temp['fields']['building_name'], temp['fields']['building_lat'], temp['fields']['building_lon']))
+
 
         response = {
-            'latlng': latlng
-            # 'setData':setData
+            # 'latlng': latlng
+            'setData':setData
         }
     return HttpResponse(json.dumps(response))
 

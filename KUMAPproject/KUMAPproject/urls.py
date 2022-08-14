@@ -9,7 +9,6 @@ Function views
 Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
@@ -23,12 +22,9 @@ from KUMAPapp import views
 if settings.DEBUG:
     urlpatterns = [
         path('admin/', admin.site.urls),
-        path('', views.index, name="index"),
-        path('category/<int:kind>', views.category, name="category"),
-        path('detail_ajax/<int:pk>',views.detail_ajax, name="detail_ajax"),
+        path('index/', views.index, name="index"),
         path('search/', views.search, name='search'),
-        path('facility/<int:building_pk>', views.facility, name="facility"),
-        path('time/<str:from_building>/<str:to_building>/', views.time, name='time'),
+
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

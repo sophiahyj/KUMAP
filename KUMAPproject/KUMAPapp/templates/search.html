@@ -24,7 +24,7 @@
                 <div class="choice">
                     {% for building in buildingList %}
                     <div class="item">
-                        <a id="select_building" class="name"> {{building.building_name}} </a>
+                        <a href="https://www.naver.com" class="name"> {{building.building_name}} </a>
                     </div>
                     {% endfor %}
                 </div>
@@ -53,12 +53,6 @@
                   }
                 }
               }
-        </script>
-        <script>
-          let sel = document.getElementById('select_building')
-          sel.addEventListener('click',()=>{
-            
-          })
         </script>
     </div>
 </body>

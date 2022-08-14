@@ -30,12 +30,12 @@ class Entrance(models.Model):
         return self.building_id.building_name
 
 FACILITY_CHOICES = (
-        ('cafe', '카페'),
-        ('restaurant', '식당'),
-        ('one-stop', '원스톱'),
-        ('book_return', '책반납기'),
-        ('printer', '프린터'),
-        ('lounge', '스터디'),
+        ('cafe', 'cafe'),
+        ('restaurant', 'restaurant'),
+        ('one-stop', 'one-stop'),
+        ('book_return', 'book_return'),
+        ('printer', 'printer'),
+        ('lounge', 'lounge'),
     )
 
 class Facility(models.Model):

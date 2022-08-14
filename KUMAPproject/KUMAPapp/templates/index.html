@@ -345,7 +345,7 @@
             method: "POST",
           })
           .then(response => response.json())
-          .then(res => res['latlng'].forEach(function(item){
+          .then(res => res['setData'].forEach(function(item){
             // console.log(item)
 
             //여기 view랑 같이 고치는 중
@@ -353,13 +353,13 @@
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
             var marker = new kakao.maps.Marker({
               map: map,
-              position: new kakao.maps.LatLng(item[0], item[1]),
+              position: new kakao.maps.LatLng(item[2], item[3]),
               image: markerImage
             })
             MarkerStorage.push(marker)
             kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
             var latlng = item.latlng;
-            location.href = `javascript:display(${item.pk}); setZoomRange(${item[0]}, ${item[1]}); makeSearchmodalGetName('${item.name}',1)`;
+            location.href = `javascript:display(${item[0]}); setZoomRange(${item[2]}, ${item[3]}); makeSearchmodalGetName('${item[1]}',1)`;
             })
           }))
         }   

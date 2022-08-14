@@ -13,7 +13,7 @@
   </head>
 <body>
     {% for entrance in entrances %}
-    <div class="container" id="infoWindow{{entrance.pk}}">
+    <div class="container" id="infoWindow{{entrance.pk}}" style="display:none;">
     {% comment %} <!-- <div class="container" id="infoWindow{{entrance.pk}}" style="display: none;"> --> {% endcomment %}
         <img src="{% static './images/close_button.png' %}" class="closeButton" id="closeButton{{entrance.pk}}" onclick="closeButton({{entrance.pk}})">
         <h3>{{ buildingslists.building_name }}</h3>
@@ -27,7 +27,7 @@
         </div>
     </div>
     {% endfor %}
-    <div id="map"></div>
+    <div id="map" style="width:100%;height:100vh;"></div>
   <script>
       function closeButton(pk){
           var con=document.getElementById(`infoWindow${pk}`);
@@ -64,10 +64,10 @@
     console.log('tempdoor1', tempdoor1)
     console.log('tempdoor2', tempdoor2)
     const positions = tempdoor2.map(element =>{return  {
-          latlng: new kakao.maps.LatLng(element.fields.latitude, element.fields.longitude),
+          latlng: new kakao.maps.LatLng(element.fields.entrance_lat, element.fields.entrance_lon),
           pk: element.fields.names,
           lat: element.fields.latitude,
-          long: element.fields.longitude
+          long: element.fields.longitude,
         }});
     console.log({positions})
     var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";

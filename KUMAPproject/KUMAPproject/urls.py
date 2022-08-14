@@ -28,6 +28,7 @@ if settings.DEBUG:
         path('detail_ajax/<int:pk>',views.detail_ajax, name="detail_ajax"),
         path('search/', views.search, name='search'),
         path('facility/<int:building_pk>', views.facility, name="facility"),
+        path('time/<str:from_building>/<str:to_building>/', views.time, name='time'),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

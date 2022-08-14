@@ -80,3 +80,19 @@ def facility(request, building_pk):
     facilities = Facility.objects.filter(building_id = building_pk)
 
     return render(request, 'facility.html', {'building': building, 'facilities': facilities})
+
+@csrf_exempt
+def time(request, from_building, to_building):
+    from_building = from_building[6:]
+    to_building = to_building[6:]
+    print(1234, from_building,to_building)
+    fromBuilding = Building.objects.get(building_name = from_building)
+    toBuilding = Building.objects.get(building_name = to_building)
+    data = {
+        'frombuilding_lat':str(fromBuilding.building_lat),
+        'frombuilding_lon':str(fromBuilding.building_lon),
+        'tobuilding_lat':str(toBuilding.building_lat),
+        'tobuilding_lon':str(toBuilding.building_lon),
+    }
+    print(data)
+    return JsonResponse(data)

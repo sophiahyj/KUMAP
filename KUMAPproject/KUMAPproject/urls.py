@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from KUMAPapp import views
@@ -23,6 +23,7 @@ from KUMAPapp import views
 if settings.DEBUG:
     urlpatterns = [
         path('admin/', admin.site.urls),
+<<<<<<< HEAD
         path('', views.index, name="index"),
         path('category/<int:kind>', views.category, name="category"),
         path('detail_ajax/<int:pk>',views.detail_ajax, name="detail_ajax"),
@@ -32,3 +33,7 @@ if settings.DEBUG:
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+        path('', include('KUMAPapp.urls')),
+    ] 
+>>>>>>> c91a2d45cd8c1f42a6ac280f52e6eb58ab86acea

@@ -47,8 +47,10 @@
 /* 선택지 창 */
   .choice{
     background: white;
+
+    overflow: scroll;
+    height: 100vh;
     padding: 2vh 5% 10vh 5%;
-    overflow-y: scroll;
   }
   .item{
     margin: 3% 0px;
@@ -60,4 +62,9 @@
     font-weight: 470;
     color: #333;
     text-decoration-line : none;
+  }
+
+  .YB{
+    height: 200px;
+    width:100%;
   }

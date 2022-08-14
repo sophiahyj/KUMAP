@@ -17,8 +17,7 @@ class Entrance(models.Model):
     building_id = models.ForeignKey(Building, on_delete=models.CASCADE)
 
     entrance_name = models.CharField(max_length=50)
-    entrance_time1 = models.TimeField(auto_now=False, auto_now_add=False, null=True)
-    entrance_time2 = models.TextField(null=True)
+    entrance_time = models.TextField(null=True)
     entrance_lat = models.FloatField(default=0.0)   
     entrance_lon = models.FloatField(default=0.0)
     entrance_num = models.IntegerField(null=True)

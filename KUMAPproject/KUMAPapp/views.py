@@ -33,18 +33,21 @@ def category(request, kind):
         kind = 'book_return'
     elif kind == 5:
         kind = 'printer'
+    elif kind == 7:
+        kind = 'one-stop' 
         
     #좀더 효율적으로 바꾸기 바보야
     if request.method == 'POST':
         temp = []
-        latlng = []
+        setData = []
+
 
         #모든 건물 카테고리 버튼을 클릭했을 때
         if kind == 6:
             facility = serializers.serialize("json", Building.objects.all())
             hey = json.loads(facility)
             for element in hey:
-                latlng.append((element['fields']['building_lat'], element['fields']['building_lon']))
+                setData.append((element['fields']['building_lat'], element['fields']['building_lon']))
        
         #그 외의 카테고리 버튼을 클릭했을 때
         else:
@@ -52,14 +55,15 @@ def category(request, kind):
             hey = json.loads(facility)
             for element in hey:
                 temp = serializers.serialize("json", Building.objects.filter(pk = element['fields']['building_id']))
-                temp = json.loads(temp)[0]['fields']
-                latlng.append((temp['building_lat'], temp['building_lon']))
+                temp = json.loads(temp)[0]
+                setData.append((temp['pk'], temp['fields']['building_name'], temp['fields']['building_lat'], temp['fields']['building_lon']))
+
 
         response = {
-            'latlng': latlng
+            # 'latlng': latlng
+            'setData':setData
         }
     return HttpResponse(json.dumps(response))
-
 
 def detail_ajax(request, pk):
     post = Building.objects.get(pk=pk)
@@ -80,6 +84,17 @@ def facility(request, building_pk):
     facilities = Facility.objects.filter(building_id = building_pk)
 
     return render(request, 'facility.html', {'building': building, 'facilities': facilities})
+
+def entrance(request, building_pk):
+    buildingslists = Building.objects.get(pk = building_pk)
+    entrances = Entrance.objects.filter(building_id = building_pk)
+    schoolj = serializers.serialize('json', [Building.objects.filter(pk=building_pk)[0]])
+    doorsj = serializers.serialize('json', Entrance.objects.filter(building_id=building_pk))
+
+    return render(request, 'entrance.html', {'buildingslists': buildingslists, 'entrances': entrances, 'schoolj': schoolj, 'doorsj': doorsj})
+
+def first(request):
+    return render(request, 'first.html')
 
 @csrf_exempt
 def time(request, from_building, to_building):

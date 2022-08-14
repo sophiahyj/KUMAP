@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="{% static './css/search.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="{% static './MapApp/css/index.css' %}">
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx8023ed37ddc6432ca276a6b0046e843b"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
   
@@ -51,24 +53,20 @@
             </div>
             <div class="scroll__wrap">
                 <div class="scroll--element" id="allMenu"><div>모든 건물</div></div>
-                <div class="scroll--element" id="cafeMenu"><div>카페</div></div>
+                <div class="scroll--element" id="cafeMenu"><span></span><div>카페</div></div>
                 <div class="scroll--element" id="resMenu"><div>식당</div></div>
-                <div class="scroll--element" id="loungeMenu"><div>라운지</div></div>
+                <div class="scroll--element" id="loungeMenu"><div>스터디</div></div>
                 <div class="scroll--element" id="bookMenu"><div>책반납기</div></div>
                 <div class="scroll--element" id="printMenu"><div>프린터</div></div>
+                <div class="scroll--element" id="onestopMenu"><div>원스톱</div></div>
             </div>
         </div>
         <div class="modal"></div>
     </div>
     <!-- 지도 위에 표시될 마커 카테고리 -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	19de326d13f32aab18ce3a0096074178"></script>
-kakao.maps.load(function() {
-    // v3가 모두 로드된 후, 이 콜백 함수가 실행됩니다.
-    const  map = new kakao.maps.Map(node, options);
-});
+
 </script>
-// Parameters
-// callback Function
 	<script type="text/javascript">
 		/* 지도 생성 */
 		var mapContainer = document.getElementById('map');
@@ -99,8 +97,8 @@ kakao.maps.load(function() {
         let allMarkerStorage = []
         buildingLocations.forEach(function(item){
             allPositions.push(item['latlng'])
-            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-            var imageSize = new kakao.maps.Size(24, 35); 
+            var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTQ0/MDAxNjYwNDU0NDEyODI1.MmoryyXYbd3qd5n8V-jWj1P_ko5ZZYBD6XOlMVTXHY4g.b9HQQEo89Qghj8jhECEsMhY7GrPEAzJturC8pmA4WVog.PNG.ahrefhoo/Location_24px.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35); 
             
             // 마커 이미지를 생성합니다    
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
@@ -167,13 +165,74 @@ kakao.maps.load(function() {
           </div>
           <div class="button_loc">
             <img src="{% static './images/location.png' %}" class="locationImage">
-            <span>목적지 : ${name}</span>
+            <span id='to_buliding_name'>목적지 : ${name}</span>
           </div>
-          <a class="button_main">이동경로 검색</a>
+          <span class="button_main" onclick="naver_please()">이동경로 검색</span>
         </div>`
         modal = document.querySelector(".modal")
         modal.innerHTML = template
         btn_loc()
+      }
+      function showThirdModal(times,fromBuildingNames,toBuildingNames){
+        modal = document.querySelector(".modal")
+        template = `
+        <div class="container">
+          <img src="{% static './images/close_button.png' %}" class="closeButton" onclick="closeModal()">
+          <h3>이동시간 확인</h3>
+          <div class="button_loc2">
+            <span>${fromBuildingNames}</span>
+            <img src="{% static './images/arrow.png' %}" class="arrow">
+            <span>${toBuildingNames}</span>
+          </div>
+          <div class="button_main_3">
+            <img src="{% static './images/running.png' %}" class="runningImage">
+            <span>도보 예상시간: ${times}분</span>
+          </div>
+          <p class="button_else" onclick="closeModal()">다른 출발지 지정하기</p>
+          <a href="https://map.kakao.com/" class="button_else">상세 이동경로 확인하기</a>
+        </div>
+        `
+        modal.innerHTML=template
+      }
+      function naver_please(){
+        let fromBuildingName = document.getElementById('from_building').innerText
+        let toBuildingName = document.getElementById('to_buliding_name').innerText
+        if(fromBuildingName==='출발지를 입력해주세요!'){
+          return;
+        }
+        else{
+          $.ajax({
+            url: '/time/' + fromBuildingName +'/'+toBuildingName,
+            async: false,
+            type: "GET",
+            dataType: "json", 
+            success: (latlon) => {
+                  console.log(latlon)
+                  $.ajax({
+                    method : "POST",
+                    url : "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json&callback=result",
+                    async : false,
+                    data : {
+                      "appKey" : "l7xx8023ed37ddc6432ca276a6b0046e843b",
+                      "startX" : latlon.frombuilding_lon,
+                      "startY" : latlon.frombuilding_lat,
+                      "endX" : latlon.tobuilding_lon,
+                      "endY" : latlon.tobuilding_lat,
+                      "reqCoordType" : "WGS84GEO",
+                      "resCoordType" : "EPSG3857",
+                      "startName" : "출발지",
+                      "endName" : "도착지"
+                    },
+                    success: function(response){
+                      var resultData = response.features;
+                      times = ((resultData[0].properties.totalTime) / 60).toFixed(0)
+                      showThirdModal(times,fromBuildingName,toBuildingName)
+                    },
+                          })
+            }
+            
+          });
+        }
       }
       
       function grab_etr(){
@@ -257,31 +316,39 @@ kakao.maps.load(function() {
           })
 
           if (kind == 1){
-            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTY1/MDAxNjU5NTQ1MzY1OTk3.FPkKlKkdyWb9MZ278pBlrNymusH_CGWPshTggNTzY10g.vt3gYVAhITm4Lk_md5yh74wWRQJrEn-qkKpUeBnoRl0g.PNG.ahrefhoo/coffeMarker.png?type=w966";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTE3/MDAxNjYwNDQ5MTQwMzcz.QqhNgnVVCqtaytcRjxqmfhjTav3gtatX3glBmA5AOAcg.36BjWIM_aKS-jScT9w7affP6DhpP1JnZ4s6VQe0FmIsg.PNG.ahrefhoo/Cafe_24px.png?type=w966";
           }
           else if (kind == 2){
-            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfMTEy/MDAxNjYwMzk5MTQyNDQy.IDdyImo1zXyCsyWUm6APqWP9BZGVmERzn-ajSHhveisg.0qb2Ht5rnRpM5UFu8L7qoZNSzErSpwvniG8BhGsJz2og.PNG.ahrefhoo/resMarker.png?type=w966";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTQw/MDAxNjYwNDUxNzk4MjUw.1t9NvvaJlMNaTcsVxC_as-ifZ9r_-fjRoX97UabNX8Qg.xKKso0xyWdqXB1FsZ7D9Fmym5TQcoy9EWpIZC2rCo3Ig.PNG.ahrefhoo/Restaurant_24px.png?type=w966";
           }
           else if (kind == 3){
-            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMjQ1/MDAxNjU5NTQ1MzcxNDMy.Lmu4a7UAs9HmLVpjkKs133pfmV4NJWCvUFclvQYBEQsg.JCT58_NY-6l69dompsgYZxHnGMRXPrWstDcGAaaLnTMg.PNG.ahrefhoo/sofaMarker.png?type=w966";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfNzAg/MDAxNjYwNDUxNzk4MjMx.X5pzKcOlZqYvcnqHKQQsEVFfHWz1lqNTyK6xnbj1h4Qg.JdDlea-Pd75934cIBLU24nEiW4FaS-RW6gT0yh9-7LEg.PNG.ahrefhoo/Study_24px.png?type=w966";
           }
           else if (kind == 4){
-            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MDRfMTE3/MDAxNjU5NTQ1MzYxNTQy.EUDoV7kVj6e48lsbZl8L08UZtMbm-GKvjpJWltKCCcYg.U2EjflUTJRhFkuAutKOFWvRoV1IgWQ8STeGe6w2gkhYg.PNG.ahrefhoo/bookMarker.png?type=w966";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTU4/MDAxNjYwNDUxNzg4OTIw.5cz7Z-8B1O6E8Qc8xDKQcAl1yjulZSPt-kY3fj0ebxIg.Azk2T9CP-RJRHinIs1t55l9FR71oR_WGqXAqdJmAjLcg.PNG.ahrefhoo/Bookreturn_24px.png?type=w966";
           }
           else if (kind == 5){
-            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTNfNDYg/MDAxNjYwMzk5MTQyNDU2.INEx4gxaxKfFUG8faigcHbCK_25YMR_tPY1M-c-KAjAg.XExP0IFFQaHj-SdNCRXsTrwpTfzpwiXbgAwm8OZTZAYg.PNG.ahrefhoo/printMarker.png?type=w966";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMjQ5/MDAxNjYwNDUxNzk4Mjg0.P3alLMcB6BDrgMnD2wfDDepGxs9MYa_lfDzMOglhMBgg.ZdZhg13OEMWqW4eyENP7Jfj8tBF6rRPqs8seDnAEVJcg.PNG.ahrefhoo/Printer_24px.png?type=w966";
           }
           else if (kind == 6){
-            imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTQ0/MDAxNjYwNDU0NDEyODI1.MmoryyXYbd3qd5n8V-jWj1P_ko5ZZYBD6XOlMVTXHY4g.b9HQQEo89Qghj8jhECEsMhY7GrPEAzJturC8pmA4WVog.PNG.ahrefhoo/Location_24px.png?type=w966";
           }
-
+          else if (kind == 7){
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTE5/MDAxNjYwNDUxNzk4MTgz.uztbypCmZrUcUDMwR8wqyZGlmmfj5MdLB3Qt1Sd9bc4g.iQ_ohRT-s9SFUmwgxzJ55JRFnGjvOXpIuPwTS3G5e9og.PNG.ahrefhoo/One-stop_24px.png?type=w966"
+          }
+          // name_temp = []
+          // pk_temp = []
+          
           console.log('카테고리 함수가 제대로 작동되었어요')
           fetch('/category/' + kind, {
             method: "POST",
           })
           .then(response => response.json())
           .then(res => res['latlng'].forEach(function(item){
-            var imageSize = new kakao.maps.Size(24, 35);
+            // console.log(item)
+
+            //여기 view랑 같이 고치는 중
+            var imageSize = new kakao.maps.Size(35, 35);
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
             var marker = new kakao.maps.Marker({
               map: map,
@@ -289,6 +356,10 @@ kakao.maps.load(function() {
               image: markerImage
             })
             MarkerStorage.push(marker)
+            kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            var latlng = item.latlng;
+            location.href = `javascript:display(${item.pk}); setZoomRange(${item[0]}, ${item[1]}); makeSearchmodalGetName('${item.name}',1)`;
+            })
           }))
         }   
 
@@ -298,7 +369,6 @@ kakao.maps.load(function() {
           changeCategory(1)
         })
       
-
         let resbtn = document.getElementById('resMenu')
         resbtn.addEventListener('click', ()=>{
           console.log('식당이 제대로 클릭되었어요')
@@ -327,6 +397,12 @@ kakao.maps.load(function() {
         allbtn.addEventListener('click', ()=>{
           console.log('모든 건물이 제대로 클릭되었어요')
           changeCategory(6)
+        })
+
+        let onestopbtn = document.getElementById('onestopMenu')
+        onestopbtn.addEventListener('click', ()=>{
+          console.log('원스톱이 제대로 클릭되었어요')
+          changeCategory(7)
         })
 
         function setZoomRange(lat, lng) {
@@ -385,3 +461,4 @@ kakao.maps.load(function() {
     </script>
 </body>
 </html>
+

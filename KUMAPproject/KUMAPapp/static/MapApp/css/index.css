@@ -57,23 +57,12 @@
 
 /* .scroll--element div{ */
 /* } */
-
+/* .scroll--element > span {
+  background: url("./coolicon.png");
+  background-size: 30%;
+} */
 .scroll--element + .scroll--element {
     margin-left:10px;
-}
-
-
-/* 마커 아이콘 */
-#cafeMenu {
-    background-image: url("./hot-drink.png");
-}
-
-#loungeMenu {
-    background-image: url("./sofa.png")
-}
-
-#bookMenu {
-    background-image: url("./romance.png");
 }
 
 /* h2 {

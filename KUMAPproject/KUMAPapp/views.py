@@ -11,7 +11,7 @@ from .models import Building, Entrance, Facility
 
 # Create your views here.
 def index(request):
-    buildingList = Building.objects.all()
+    buildingList =  Building.objects.order_by('building_name')
     buildings = serializers.serialize('json', Building.objects.all())
 
     facilityList = Facility.objects.all()
@@ -33,11 +33,15 @@ def category(request, kind):
         kind = 'book_return'
     elif kind == 5:
         kind = 'printer'
+    elif kind == 7:
+        kind = 'one-stop' 
         
     #좀더 효율적으로 바꾸기 바보야
     if request.method == 'POST':
         temp = []
         latlng = []
+        # setData = []
+
 
         #모든 건물 카테고리 버튼을 클릭했을 때
         if kind == 6:
@@ -53,10 +57,12 @@ def category(request, kind):
             for element in hey:
                 temp = serializers.serialize("json", Building.objects.filter(pk = element['fields']['building_id']))
                 temp = json.loads(temp)[0]['fields']
+                # setData.appen
                 latlng.append((temp['building_lat'], temp['building_lon']))
 
         response = {
             'latlng': latlng
+            # 'setData':setData
         }
     return HttpResponse(json.dumps(response))
 
@@ -80,3 +86,19 @@ def facility(request, building_pk):
     facilities = Facility.objects.filter(building_id = building_pk)
 
     return render(request, 'facility.html', {'building': building, 'facilities': facilities})
+
+@csrf_exempt
+def time(request, from_building, to_building):
+    from_building = from_building[6:]
+    to_building = to_building[6:]
+    print(1234, from_building,to_building)
+    fromBuilding = Building.objects.get(building_name = from_building)
+    toBuilding = Building.objects.get(building_name = to_building)
+    data = {
+        'frombuilding_lat':str(fromBuilding.building_lat),
+        'frombuilding_lon':str(fromBuilding.building_lon),
+        'tobuilding_lat':str(toBuilding.building_lat),
+        'tobuilding_lon':str(toBuilding.building_lon),
+    }
+    print(data)
+    return JsonResponse(data)

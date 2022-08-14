@@ -11,7 +11,7 @@ from .models import Building, Entrance, Facility
 
 # Create your views here.
 def index(request):
-    buildingList = Building.objects.all()
+    buildingList = Building.objects.order_by('building_name')
     buildings = serializers.serialize('json', Building.objects.all())
 
     facilityList = Facility.objects.all()

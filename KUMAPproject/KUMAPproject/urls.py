@@ -25,3 +25,4 @@ if settings.DEBUG:
         path('admin/', admin.site.urls),
         path('', include('KUMAPapp.urls')),
     ] 
+

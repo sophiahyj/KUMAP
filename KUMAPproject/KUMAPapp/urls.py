@@ -31,5 +31,3 @@ if settings.DEBUG:
         path('time/<str:from_building>/<str:to_building>/', views.time, name='time'),
         path('entrance/<int:building_pk>', views.entrance, name="entrance"),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

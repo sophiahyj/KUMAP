@@ -5,12 +5,23 @@ from django.shortcuts import render
 from django.core import serializers
 from urllib import response
 from django.http import HttpResponse, JsonResponse
+import os
 import json
 # (https://han-py.tistory.com/356 사용법)
 from .models import Building, Entrance, Facility
+from pathlib import Path
+import environ
+# django-environ이용해서 환경변수 처리
+BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env(DEBUG=(bool, True))
+environ.Env.read_env(
+    env_file=os.path.join(BASE_DIR, '.env')
+)
 
 # Create your views here.
 def index(request):
+    kakaoKey=env('KAKAO_APP_KEY')
+    tmapKey=env('TMAP_APP_KEY')
     buildingList = Building.objects.all()
     buildings = serializers.serialize('json', Building.objects.all())
 
@@ -18,7 +29,7 @@ def index(request):
     facilities = serializers.serialize('json', Facility.objects.all())
 
 
-    return render(request, "index.html", {"buildingList": buildingList, "buildings": buildings, "facilityList": facilityList, "facilities":facilities, })
+    return render(request, "index.html", {"kakaoKey": kakaoKey, "tmapKey": tmapKey, "buildingList": buildingList, "buildings": buildings, "facilityList": facilityList, "facilities":facilities, })
 
 @csrf_exempt
 def category(request, kind):
@@ -86,12 +97,13 @@ def facility(request, building_pk):
     return render(request, 'facility.html', {'building': building, 'facilities': facilities})
 
 def entrance(request, building_pk):
+    kakaoKey=env('KAKAO_APP_KEY')
     buildingslists = Building.objects.get(pk = building_pk)
     entrances = Entrance.objects.filter(building_id = building_pk)
     schoolj = serializers.serialize('json', [Building.objects.filter(pk=building_pk)[0]])
     doorsj = serializers.serialize('json', Entrance.objects.filter(building_id=building_pk))
 
-    return render(request, 'entrance.html', {'buildingslists': buildingslists, 'entrances': entrances, 'schoolj': schoolj, 'doorsj': doorsj})
+    return render(request, 'entrance.html', {'kakaoKey':kakaoKey,'buildingslists': buildingslists, 'entrances': entrances, 'schoolj': schoolj, 'doorsj': doorsj})
 
 def first(request):
     return render(request, 'first.html')

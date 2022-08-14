@@ -8,8 +8,10 @@
     <link rel="stylesheet" type="text/css" href="{% static './css/search.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="{% static './MapApp/css/index.css' %}">
-    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx8023ed37ddc6432ca276a6b0046e843b"></script>
+
+    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey={{tmapKey}}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
 </head>
 <body>
   
@@ -65,7 +67,7 @@
         <div class="modal"></div>
     </div>
     <!-- 지도 위에 표시될 마커 카테고리 -->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	19de326d13f32aab18ce3a0096074178"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{kakaoKey}}"></script>
 
 </script>
 	<script type="text/javascript">
@@ -214,7 +216,7 @@
                     url : "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json&callback=result",
                     async : false,
                     data : {
-                      "appKey" : "l7xx8023ed37ddc6432ca276a6b0046e843b",
+                      "appKey" : "{{tmapKey}}",
                       "startX" : latlon.frombuilding_lon,
                       "startY" : latlon.frombuilding_lat,
                       "endX" : latlon.tobuilding_lon,

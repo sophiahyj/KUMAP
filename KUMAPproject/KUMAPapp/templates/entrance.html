@@ -12,6 +12,7 @@
 
   </head>
 <body>
+  <div id="mapwrap" class="middle">
     {% for entrance in entrances %}
     <div class="container" id="infoWindow{{entrance.pk}}" style="display:none;">
     {% comment %} <!-- <div class="container" id="infoWindow{{entrance.pk}}" style="display: none;"> --> {% endcomment %}
@@ -27,7 +28,10 @@
         </div>
     </div>
     {% endfor %}
-    <div id="map" style="width:100%;height:100vh;"></div>
+    <div id="map" style="width:100%;height:100vh;">
+      <a href="{% url 'index' %}" style="display:inline;"><img src="{% static './static/image/arrow_left.png' %}" class="backButton"></a>
+    </div>
+  </div>
   <script>
       function closeButton(pk){
           var con=document.getElementById(`infoWindow${pk}`);
@@ -63,19 +67,22 @@
     const tempdoor2 = JSON.parse(tempdoor1)
     console.log('tempdoor1', tempdoor1)
     console.log('tempdoor2', tempdoor2)
-    const positions = tempdoor2.map(element =>{return  {
+    allPks= []
+    const positions = tempdoor2.map(element =>{
+        allPks.push(element.pk)
+        return  {
           latlng: new kakao.maps.LatLng(element.fields.entrance_lat, element.fields.entrance_lon),
-          pk: element.fields.names,
-          lat: element.fields.latitude,
-          long: element.fields.longitude,
+          pk: element.pk,
+          lat: element.fields.entrance_lat,
+          long: element.fields.entrance_lon,
         }});
-    console.log({positions})
+    console.log(positions)
     var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
     imageSize = new kakao.maps.Size(45, 57);
     imageOption = {offset: new kakao.maps.Point(30, 69)};
 
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-
+        console.log(allPks)
       positions.forEach(position => {
          // 마커를 생성합니다
          var marker = new kakao.maps.Marker({
@@ -88,8 +95,11 @@
       });})
 
       function display(pk) {
+        allPks.forEach(eachpk=>{
+          var con = document.getElementById(`infoWindow${eachpk}`);
+          con.style.display = 'none';
+        })
         var con = document.getElementById(`infoWindow${pk}`);
-        console.log(`infoWindow${pk}`)
         if (con.style.display == "none") {
           con.style.display = "flex";
         }

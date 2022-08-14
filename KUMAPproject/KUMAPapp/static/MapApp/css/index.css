@@ -36,6 +36,7 @@
 }
 
 .scroll--element { 
+    cursor: pointer;
     display: flex;
     min-width: 80px; 
     border-radius: 9999px;
@@ -90,11 +91,14 @@ h3 {
     padding: 8px 0px 8px 0px;
     background-color: #8B0029;
     color: white;
-    width: 80%;
-    height: 10%;
+    width: 75%;
+    height: 12%;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     line-height: 30px;
     border-radius: 10px;
+
+    font-size: large;
+    font-weight: 600;
 }
 .button_else{
   cursor: pointer;
@@ -102,12 +106,15 @@ h3 {
     padding: 8px 0px 8px 0px;
     background-color: rgb(233, 231, 231);
     color: black;
-    width: 80%;
-    height: 10%;
+    width: 75%;
+    height: 12%;
    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     line-height: 30px;
     border-radius: 10px;
     text-decoration: none;
+
+    font-size: large;
+    font-weight: 400;
 }
 .button_loc{
   display: flex;

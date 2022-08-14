@@ -22,9 +22,8 @@ from KUMAPapp import views
 
 if settings.DEBUG:
     urlpatterns = [
-        path('admin/', admin.site.urls),
-        path('', views.index, name="index"),
-        path('first', views.first, name="first"),
+        path('index', views.index, name="index"),
+        path('', views.first, name="first"),
         path('category/<int:kind>', views.category, name="category"),
         path('detail_ajax/<int:pk>',views.detail_ajax, name="detail_ajax"),
         path('search/', views.search, name='search'),

@@ -18,7 +18,7 @@
             <div class="searchBox">
                 <div class="header">
                     <h2>목적지 검색</h2>
-                    <input onkeyup="filter()" type="text" id="value" placeholder="목적지를 입력해주세요.">
+                    <input onkeyup="filter1()" type="text" id="value" placeholder="목적지를 입력해주세요.">
                 </div>
                 <div class="choice">
                     {% for building in buildingList %}
@@ -34,7 +34,7 @@
             <div class="searchBox">
                 <div class="header">
                     <h2>출발지 검색</h2>
-                    <input onkeyup="filter()" type="text" id="value" placeholder="출발지를 입력해주세요.">
+                    <input onkeyup="filter2()" type="text" id="value" placeholder="출발지를 입력해주세요.">
                 </div>
                 <div class="choice">
                     {% for building in buildingList %}
@@ -42,6 +42,7 @@
                         <span id="select_building" class="name" style="cursor:pointer;"> {{building.building_name}} </span>
                     </div>
                     {% endfor %}
+                    <div class="YB"></div>
                 </div>   
             </div>
           </div>
@@ -189,7 +190,7 @@
             <img src="{% static './images/running.png' %}" class="runningImage">
             <span>도보 예상시간: ${times}분</span>
           </div>
-          <p class="button_else" onclick="closeModal()">다른 출발지 지정하기</p>
+          <p class="button_else" onclick="closeModal()">다른 이동경로 검색하기</p>
           <a href="https://map.kakao.com/" class="button_else">상세 이동경로 확인하기</a>
         </div>
         `
@@ -419,13 +420,30 @@
           hiddenToggle('a')
         })
       }
-      function filter(){
+      function filter1(){
         
                 var value, name, item, i;
         
                 value = document.getElementById("value").value.toUpperCase();
                 item = document.getElementsByClassName("item");
         
+                for(i=0;i<item.length;i++){
+                  name = item[i].getElementsByClassName("name");
+                  if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
+                    item[i].style.display = "flex";
+                  }else{
+                    item[i].style.display = "none";
+                  }
+                }
+              }
+
+      function filter2(){
+        
+                var value, name, item, i;
+
+                value = document.getElementById("value").value.toUpperCase();
+                item = document.getElementsByClassName("item");
+
                 for(i=0;i<item.length;i++){
                   name = item[i].getElementsByClassName("name");
                   if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){

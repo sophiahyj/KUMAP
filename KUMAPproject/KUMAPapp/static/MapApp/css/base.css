@@ -1,0 +1,140 @@
+h2 {
+  z-index: 10;
+}
+
+.middle {
+  width: 100%;
+  min-height: 100vh;
+  max-width: 450px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aliceblue;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 35%;
+  max-width: 450px;
+  
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  background-color: white;
+  border-radius: 12px 12px 0 0;
+  padding: 12px 0;
+}
+
+.locationImage {
+  margin-right: 4px;
+  width: 20px;
+  height: auto;
+}
+
+.closeButton {
+  width: 24px !important;
+  height: 24px !important;
+}
+.img-icon {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 16px;
+}
+
+.button-img {
+  width: 30%;
+}
+
+.HIDDEN{
+  display: none;
+}
+.first_search_modal{
+  z-index: 10;
+  width: 90%;
+  height: 50px;
+  position: relative;
+  left: 5%;
+  right: 5%;
+  top: 40px;
+  background-color: white;
+  border: 1px solid rgba(113, 113, 116, 0.22);
+  box-shadow: 12px 26px 50px rgba(90, 108, 234, 0.07);
+  border-radius: 22px;
+  text-align: center;
+  justify-content: flex-start;
+  display: flex;
+ 	flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+.search_font{
+  width: 180px;
+  height: 27px;
+  left: 78px;
+  top: 10px;
+
+  font-family: 'Post No Bills Colombo Medium';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  /* identical to box height */
+
+  letter-spacing: 0.5px;
+
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.search_scope{
+  height: 27px;
+  text-align: center;
+  width: 63px;
+}
+.justname{
+  z-index: 10;
+  width: 90%;
+  height: 50px;
+  position: relative;
+  left: 5%;
+  right: 5%;
+  top: 40px;
+  background-color: white;
+  border: 1px solid rgba(113, 113, 116, 0.22);
+  box-shadow: 12px 26px 50px rgba(90, 108, 234, 0.07);
+  border-radius: 22px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+ 	flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+.runningImage{
+  width: 27px;
+  height: 45px;
+}
+.button_main_3{
+    margin: 4px 0px 4px 0px;
+    padding: 8px 0px 8px 0px;
+    background-color: #8B0029;
+    color: white;
+    width: 80%;
+    height: 10%;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    line-height: 30px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+}

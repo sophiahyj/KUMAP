@@ -245,7 +245,7 @@
           str_str_btn = String(etr_btn.id)
           var result3 = str_str_btn.slice(9);
           
-          window.location.href=`http://localhost:8000/entrance/${result3}`
+          window.location.href=`./entrance/${result3}`
         })
       }
       function grab_fac(){
@@ -253,7 +253,7 @@
         etr_btn.addEventListener('click',()=>{
           str_str_btn = String(etr_btn.id)
           var result3 = str_str_btn.slice(9);
-          window.location.href=`http://localhost:8000/facility/${result3}`
+          window.location.href=`./facility/${result3}`
         })
       }
       function showFirstModal(schoolPk){
@@ -464,4 +464,3 @@
     </script>
 </body>
 </html>
-

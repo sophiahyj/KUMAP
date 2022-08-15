@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from KUMAPapp import views
 
+
 if settings.DEBUG:
     urlpatterns = [
         path('index', views.index, name="index"),

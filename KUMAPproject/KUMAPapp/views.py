@@ -58,7 +58,8 @@ def category(request, kind):
             facility = serializers.serialize("json", Building.objects.all())
             hey = json.loads(facility)
             for element in hey:
-                setData.append((element['fields']['building_lat'], element['fields']['building_lon']))
+                print(element)
+                setData.append((element['pk'], element['fields']['building_name'], element['fields']['building_lat'], element['fields']['building_lon']))
        
         #그 외의 카테고리 버튼을 클릭했을 때
         else:
@@ -75,6 +76,7 @@ def category(request, kind):
             'setData':setData
         }
     return HttpResponse(json.dumps(response))
+
 
 def detail_ajax(request, pk):
     post = Building.objects.get(pk=pk)

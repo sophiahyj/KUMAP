@@ -55,13 +55,13 @@
               </div>
             </div>
             <div class="scroll__wrap">
-                <div class="scroll--element" id="allMenu"><div>모든 건물</div></div>
-                <div class="scroll--element" id="cafeMenu"><span></span><div>카페</div></div>
-                <div class="scroll--element" id="resMenu"><div>식당</div></div>
-                <div class="scroll--element" id="loungeMenu"><div>스터디</div></div>
-                <div class="scroll--element" id="bookMenu"><div>책반납기</div></div>
-                <div class="scroll--element" id="printMenu"><div>프린터</div></div>
-                <div class="scroll--element" id="onestopMenu"><div>원스톱</div></div>
+                <div class="scroll--element" id="allMenu" onclick="changeButton('allMenu')"><div id="menuIcon"></div><div>모든 건물</div></div>
+                <div class="scroll--element" id="cafeMenu" onclick="changeButton('cafeMenu')"><div id="menuIcon"></div><div>카페</div></div>
+                <div class="scroll--element" id="resMenu" onclick="changeButton('resMenu')"><div id="menuIcon"></div><div>식당</div></div>
+                <div class="scroll--element" id="loungeMenu" onclick="changeButton('loungeMenu')"><div id="menuIcon"></div><div>스터디</div></div>
+                <div class="scroll--element" id="bookMenu" onclick="changeButton('bookMenu')"><div id="menuIcon"></div><div>책반납기</div></div>
+                <div class="scroll--element" id="printMenu" onclick="changeButton('printMenu')"><div id="menuIcon"></div><div>프린터</div></div>
+                <div class="scroll--element" id="onestopMenu" onclick="changeButton('onestopMenu')"><div id="menuIcon"></div><div>원스톱</div></div>
             </div>
         </div>
         <div class="modal"></div>
@@ -296,6 +296,54 @@
         modal.innerHTML = template
       }
 
+      /*카테고리 버튼 클릭 시 색 변경 */
+      function changeButton(buttonType) {
+        buttons = []
+        var cafe = document.getElementById('cafeMenu');
+        buttons.push(cafe)
+        var all = document.getElementById('allMenu');
+        buttons.push(all)
+        var res = document.getElementById('resMenu');
+        buttons.push(res)
+        var lounge = document.getElementById('loungeMenu');
+        buttons.push(lounge)
+        var book = document.getElementById('bookMenu');
+        buttons.push(book)
+        var print = document.getElementById('printMenu');
+        buttons.push(print)
+        var onestop = document.getElementById('onestopMenu');
+        buttons.push(onestop)
+        
+        buttons.forEach(function(element){
+          console.log(element.id)
+          if(element.id == buttonType){
+            if(element.id == 'allMenu'){
+              element.className = 'all_selected'
+            }
+            else if(element.id == 'cafeMenu'){
+              element.className = 'menu_selected1'
+            }
+            else if(element.id == 'resMenu'){
+              element.className = 'menu_selected2'
+            }
+            else if(element.id == 'loungeMenu'){
+              element.className = 'menu_selected3'
+            }
+            else if(element.id == 'bookMenu'){
+              element.className = 'menu_selected4'
+            }
+            else if(element.id == 'printMenu'){
+              element.className = 'menu_selected5'
+            }
+            else if(element.id == 'onestopMenu'){
+              element.className = 'menu_selected6'
+            }
+          }
+          else(
+            element.className = "scroll--element"
+          )
+        })
+      } 
 
 
         let MarkerStorage = []

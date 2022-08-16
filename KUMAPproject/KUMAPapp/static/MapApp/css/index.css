@@ -1,26 +1,26 @@
 #test {
     color: black;
-
-}
-
-#map {
+  
+  }
+  
+  #map {
     margin: 0px auto;
-}
-
-#mapwrap {
+  }
+  
+  #mapwrap {
     position: relative;
     overflow: hidden;
-}
-
-/* 가로 스크롤 - 카테고리 선택 버튼 */
-.wrap {
+  }
+  
+  /* 가로 스크롤 - 카테고리 선택 버튼 */
+  .wrap {
     max-width:418px; 
     margin:50px auto; 
     /* background:#f8f8f8; */
-}
-
-/* 가로 스크롤 적용 */
-.scroll__wrap {
+  }
+  
+  /* 가로 스크롤 적용 */
+  .scroll__wrap {
     top: 40px;
     overflow-y: auto; 
     white-space: nowrap; 
@@ -33,9 +33,9 @@
     padding: 10px 0 10px 0;  
     position: relative;
     z-index: 10;  
-}
-
-.scroll--element { 
+  }
+  
+  .scroll--element { 
     cursor: pointer;
     display: flex;
     min-width: 80px; 
@@ -44,51 +44,60 @@
     border:1px solid #eee;
     /* background:#fff;  */
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     background-color: white;
     box-shadow: 2px 2px 2px rgba(90, 108, 234, 0.2);
     position: relative;
     z-index: 10;  
-}
-
-::-webkit-scrollbar {
+    flex-direction: row;
+  }
+  
+  .scroll--element > div {
+  position: relative;
+  top: 2px;
+  }
+   
+  .all_selected > div, .menu_selected1 > div, .menu_selected2 > div, .menu_selected3 > div, .menu_selected4 > div, .menu_selected5 > div, .menu_selected6 > div {
+  position: relative;
+  top: 2px;
+  }
+  
+  ::-webkit-scrollbar {
     display: none;
-}
-
-
-/* .scroll--element div{ */
-/* } */
-/* .scroll--element > span {
+  }
+  
+  
+  /* .scroll--element div{ */
+  /* } */
+  /* .scroll--element > span {
   background: url("./coolicon.png");
   background-size: 30%;
-} */
-.scroll--element + .scroll--element {
+  } */
+  .scroll--element + .scroll--element {
     margin-left:10px;
-}
-
-/* h2 {
+  }
+  
+  /* h2 {
     position: absolute;
     z-index: 10;
     left: 20px;
     width: 350px;
     height: 20px;
     background-color: orange;
-
-} */
-
-h3 {
+  
+  } */
+  
+  h3 {
   font-size: 160%;
   margin-bottom: 0px;
   font-weight:900;
   margin-top:0px;
-}
-.address{
+  }
+  .address{
     font-size: 80%;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-}
-.button_main{
-    cursor: pointer;
+  }
+  .button_main{
+  cursor: pointer;
     margin: 4px 0px 4px 0px;
     padding: 8px 0px 8px 0px;
     background-color: #8B0029;
@@ -98,57 +107,54 @@ h3 {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     line-height: 30px;
     border-radius: 10px;
-
+  
     font-size: large;
     font-weight: 600;
-}
-.button_else{
-    cursor: pointer;
+  }
+  .button_else{
+  cursor: pointer;
     margin: 4px 0px 4px 0px;
     padding: 8px 0px 8px 0px;
     background-color: rgb(233, 231, 231);
     color: black;
     width: 75%;
     height: 12%;
-
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     line-height: 30px;
     border-radius: 10px;
     text-decoration: none;
-
+  
     font-size: large;
     font-weight: 400;
-}
-.button_loc{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    margin: 4px 0px 4px 0px;
+  }
+  .button_loc{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+   margin: 4px 0px 4px 0px;
     padding: 8px 0px 8px 0px;
     background-color: #E8E8E8;
-    width: 75%;
-    height: 8%;
+    width: 80%;
+    height: 10%;
     line-height: 30px;
     border-radius: 10px;
-}
-.button_loc2{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-
-    margin: 4px 0px 4px 0px;
+  }
+  .button_loc2{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+   margin: 4px 0px 4px 0px;
     padding: 8px 0px 8px 0px;
     background-color: white;
-    width: 90%;
-    height: 12%;
+    width: 80%;
+    height: 10%;
     line-height: 30px;
     border-radius: 10px;
-    margin: 0px;
-    padding: 0;
-}
+  margin: 0px;
+  padding: 0;
+  }
   
   .bar {
     width: 80%;
@@ -163,29 +169,135 @@ h3 {
     box-shadow: 5px 5px 4px rgb(53, 52, 52);
     line-height: 30px;
   }
-.hidden{
-display: none;
-}
-.locationImage{
-width: 23px;
-height: 27px;
-}
-.closeButton{
-width: 24px;
-height: 24px;
-padding-left: 80%;
-cursor: pointer;
-}
-.arrow{
-width: 14px;
-height: 10px;
-padding-left: 4px;
-padding-right: 4px;
-}
-.runningImage{
-width:27px;
-height: 35px;
-}
-.search{
+  .hidden{
+  display: none;
+  }
+  .locationImage{
+  width: 23px;
+  height: 27px;
+  }
+  .closeButton{
+  width: 24px;
+  height: 24px;
+  padding-left: 80%;
   cursor: pointer;
-}
+  }
+  .arrow{
+  width: 14px;
+  height: 10px;
+  }
+  .runningImage{
+  width:27px;
+  height: 35px;
+  }
+  .search{
+  cursor: pointer;
+  }
+  
+  #menuIcon {
+  width: 12px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  top: 7px;
+  right: 2px;
+  }
+  #allMenu #menuIcon {
+    background-image: url("./tiger.png");
+    right: 0px;
+    width: 9px;
+    height: 9px;
+    margin-top: 2px;
+    margin-left: 2px;
+  }
+  #cafeMenu #menuIcon {
+    background-image: url("./cafe.png");
+  }
+
+  #resMenu  #menuIcon {
+    background-image: url("./restuarant.png");
+  }
+  #loungeMenu #menuIcon {
+    background-image: url("./study.png");
+    margin-top: 2px;
+  }
+  #bookMenu #menuIcon {
+    background-image: url("./bookreturn.png");
+    right: 0px;
+    margin-top: 3px;
+  }
+  #printMenu #menuIcon {
+    background-image: url("./printer.png");
+  }
+  #onestopMenu #menuIcon {
+    background-image: url("./one-stop.png");
+  }
+  
+  
+ .scroll__wrap .menu_selected1, .scroll__wrap .menu_selected2, .scroll__wrap .menu_selected3, .scroll__wrap .menu_selected4, .scroll__wrap .menu_selected5, .scroll__wrap .menu_selected6 {
+  cursor: pointer;
+  display: flex;
+  min-width: 80px; 
+  border-radius: 9999px;
+  height: 30px; 
+  border:1px solid #eee;
+  justify-content: center;
+  background-color: #8B0029;
+  color: white;
+  box-shadow: 2px 2px 2px rgba(90, 108, 234, 0.2);
+  position: relative;
+  z-index: 10;  
+  flex-direction: row;
+  
+  margin-left: 10px;
+  margin-right: 10px;
+  }
+  
+  .scroll__wrap .all_selected {
+  cursor: pointer;
+  display: flex;
+  min-width: 80px; 
+  border-radius: 9999px;
+  height: 30px; 
+  border:1px solid #eee;
+  justify-content: center;
+  background-color: #8B0029;
+  color: white;
+  box-shadow: 2px 2px 2px (90, 108, 234, 0.2);
+  position: relative;
+  z-index: 10;  
+  margin-right: 10px;
+  }
+  
+  .scroll__wrap .menu_selected1 {
+    background-color: #E72280;
+  }
+
+  .scroll__wrap .menu_selected2 {
+    background-color: #EB7F01;
+  }
+
+  .scroll__wrap .menu_selected3 {
+    background-color: #F1CC0A;
+  }
+  .scroll__wrap .menu_selected4 {
+    background-color: #159C43;
+  }
+  .scroll__wrap .menu_selected5 {
+    background-color: #8F0EBC;
+  }
+  .scroll__wrap .menu_selected6 {
+    background-color: #1E10BF;
+  }
+
+
+
+  .all_selected > div {
+  padding-top: 2px;
+  }
+  
+  .all_selected > #menuIcon, .menu_selected1 > #menuIcon, .menu_selected2 > #menuIcon, .menu_selected3 > #menuIcon, .menu_selected4 > #menuIcon, .menu_selected5 > #menuIcon, .menu_selected6 > #menuIcon {
+  color: white;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+  }

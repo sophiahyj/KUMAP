@@ -87,7 +87,7 @@ def detail_ajax(request, pk):
 
 
 def search(request):
-    buildingList = Building.objects.all()
+    buildingList = Building.objects.order_by('building_name')
     return render(request, 'search.html', {'buildingList':buildingList})
 
 def facility(request, building_pk):

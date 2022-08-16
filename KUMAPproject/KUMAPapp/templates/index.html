@@ -52,6 +52,7 @@
               <div class="first_search_modal">
                 <span class="material-icons search_scope">search</span>
                 <span class="search_font">목적지를 검색하세요</span>
+                <span class="tigerIcon" style="background-image: url('/KUMAPproject/KUMAPapp/static/MapApp/css/kumapSymbol.png'); z-index: inherit;"></span>
               </div>
             </div>
             <div class="scroll__wrap">
@@ -100,7 +101,7 @@
         let allMarkerStorage = []
         buildingLocations.forEach(function(item){
             allPositions.push(item['latlng'])
-            var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTQ0/MDAxNjYwNDU0NDEyODI1.MmoryyXYbd3qd5n8V-jWj1P_ko5ZZYBD6XOlMVTXHY4g.b9HQQEo89Qghj8jhECEsMhY7GrPEAzJturC8pmA4WVog.PNG.ahrefhoo/Location_24px.png?type=w966"; 
+            var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
             var imageSize = new kakao.maps.Size(35, 35); 
             
             // 마커 이미지를 생성합니다    
@@ -382,7 +383,7 @@
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMjQ5/MDAxNjYwNDUxNzk4Mjg0.P3alLMcB6BDrgMnD2wfDDepGxs9MYa_lfDzMOglhMBgg.ZdZhg13OEMWqW4eyENP7Jfj8tBF6rRPqs8seDnAEVJcg.PNG.ahrefhoo/Printer_24px.png?type=w966";
           }
           else if (kind == 6){
-            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTQ0/MDAxNjYwNDU0NDEyODI1.MmoryyXYbd3qd5n8V-jWj1P_ko5ZZYBD6XOlMVTXHY4g.b9HQQEo89Qghj8jhECEsMhY7GrPEAzJturC8pmA4WVog.PNG.ahrefhoo/Location_24px.png?type=w966";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966";
           }
           else if (kind == 7){
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTE5/MDAxNjYwNDUxNzk4MTgz.uztbypCmZrUcUDMwR8wqyZGlmmfj5MdLB3Qt1Sd9bc4g.iQ_ohRT-s9SFUmwgxzJ55JRFnGjvOXpIuPwTS3G5e9og.PNG.ahrefhoo/One-stop_24px.png?type=w966"

@@ -52,7 +52,7 @@
               <div class="first_search_modal">
                 <span class="material-icons search_scope">search</span>
                 <span class="search_font">목적지를 검색하세요</span>
-                <span class="tigerIcon" style="background-image: url('/KUMAPproject/KUMAPapp/static/MapApp/css/kumapSymbol.png'); z-index: inherit;"></span>
+                <img class="kumapIcon" src="https://blogfiles.pstatic.net/MjAyMjA4MThfMTIz/MDAxNjYwNzUxMDIxMzcy.rB9fHVptpu9tgY3-d67qXXMnIeCAJXgVXRz9LibRRNMg.NYk5kR9qZAOhD13otCWU27yY7poMuYT4juSK2ALgAkcg.PNG.whoy259/KakaoTalk_20220817_010207150_01.png">
               </div>
             </div>
             <div class="scroll__wrap">
@@ -119,6 +119,22 @@
             location.href = `javascript:display(${item.pk}); setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('${item.name}',1)`;
             })
         })
+        function sungwunEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(34.946421424403304, 127.72892831488181)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(34.946421424403304, 127.72892831488181)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한명이 다녔던 고등학교',2)`;
+            })
+        }
+        sungwunEasterEgg();
         function makeSearchmodalGetName(name, state){
           let searchboxname = document.querySelector('.search_font')
           let firstSearchModal = document.querySelector('.first_modal_location')
@@ -127,6 +143,7 @@
               `<div class="first_search_modal">
                 <span class="material-icons search_scope">search</span>
                 <span class="search_font">목적지를 검색하세요</span>
+                <img class="kumapIcon" src="https://blogfiles.pstatic.net/MjAyMjA4MThfMTIz/MDAxNjYwNzUxMDIxMzcy.rB9fHVptpu9tgY3-d67qXXMnIeCAJXgVXRz9LibRRNMg.NYk5kR9qZAOhD13otCWU27yY7poMuYT4juSK2ALgAkcg.PNG.whoy259/KakaoTalk_20220817_010207150_01.png">
               </div>`
           }
           if(state === 1){
@@ -134,6 +151,15 @@
             `<div class="justname">
               <span class="search_font" style="color: rgba(0,0,0,1)">${name}</span>
             </div>`
+          }
+          if(state === 2){
+            firstSearchModal.innerHTML = 
+            `<div class="justname">
+              <span class="search_font" style="color: rgba(0,0,0,1)">${name}</span>
+            </div>`
+            setTimeout(function(){
+	            location.reload();
+	          },3000);
           }
           searchboxname.innerText = name
         }

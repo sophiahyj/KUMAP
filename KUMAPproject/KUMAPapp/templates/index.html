@@ -131,10 +131,44 @@
             });
           kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
             latlng = new kakao.maps.LatLng(34.946421424403304, 127.72892831488181)
-            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한명이 다녔던 고등학교',2)`;
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명이 다녔던 고등학교',2)`;
+            })
+        }
+
+        function yejinEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(37.5609247, 126.9973567)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(37.5609247, 126.9973567)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명의 최애 맛집',2)`;
+            })
+        }
+
+        function jhEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(37.2599665470065, 127.0446888947659)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(37.2599665470065, 127.0446888947659)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명의 첫 데이트 장소',2)`;
             })
         }
         sungwunEasterEgg();
+        yejinEasterEgg();
+        jhEasterEgg();
         function makeSearchmodalGetName(name, state){
           let searchboxname = document.querySelector('.search_font')
           let firstSearchModal = document.querySelector('.first_modal_location')

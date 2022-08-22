@@ -81,7 +81,7 @@
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 
 		/* DB 정보 저장 */
-		const buildings = {{ buildingsj|safe }};
+		const buildings = {{ buildings|safe }};
 		const temp1 = JSON.stringify(buildings);
     const temp2 = JSON.parse(temp1)
 		// view에서 받아온 DB담아두기 

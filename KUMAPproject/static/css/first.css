@@ -1,0 +1,7 @@
+.firstimg {
+    display: block;
+    margin: 0 auto;
+    width: 450px;
+    min-height: 100vh;
+    /* max-height: 100vh; */
+}

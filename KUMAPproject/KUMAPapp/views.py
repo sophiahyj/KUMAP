@@ -22,7 +22,7 @@ environ.Env.read_env(
 def index(request):
     kakaoKey=env('KAKAO_APP_KEY')
     tmapKey=env('TMAP_APP_KEY')
-    buildingList = Building.objects.all()
+    buildingList = Building.objects.order_by('building_name')
     buildings = serializers.serialize('json', Building.objects.all())
 
     facilityList = Facility.objects.all()

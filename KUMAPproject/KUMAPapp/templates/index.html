@@ -52,6 +52,7 @@
               <div class="first_search_modal">
                 <span class="material-icons search_scope">search</span>
                 <span class="search_font">목적지를 검색하세요</span>
+                <img class="kumapIcon" src="https://blogfiles.pstatic.net/MjAyMjA4MThfMTIz/MDAxNjYwNzUxMDIxMzcy.rB9fHVptpu9tgY3-d67qXXMnIeCAJXgVXRz9LibRRNMg.NYk5kR9qZAOhD13otCWU27yY7poMuYT4juSK2ALgAkcg.PNG.whoy259/KakaoTalk_20220817_010207150_01.png">
               </div>
             </div>
             <div class="scroll__wrap">
@@ -100,7 +101,7 @@
         let allMarkerStorage = []
         buildingLocations.forEach(function(item){
             allPositions.push(item['latlng'])
-            var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTQ0/MDAxNjYwNDU0NDEyODI1.MmoryyXYbd3qd5n8V-jWj1P_ko5ZZYBD6XOlMVTXHY4g.b9HQQEo89Qghj8jhECEsMhY7GrPEAzJturC8pmA4WVog.PNG.ahrefhoo/Location_24px.png?type=w966"; 
+            var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
             var imageSize = new kakao.maps.Size(35, 35); 
             
             // 마커 이미지를 생성합니다    
@@ -118,6 +119,72 @@
             location.href = `javascript:display(${item.pk}); setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('${item.name}',1)`;
             })
         })
+        function sungwunEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(34.946421424403304, 127.72892831488181)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(34.946421424403304, 127.72892831488181)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명이 다녔던 고등학교',2)`;
+            })
+        }
+
+        function yejinEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(37.5609247, 126.9973567)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(37.5609247, 126.9973567)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명의 최애 맛집',2)`;
+            })
+        }
+
+        function jhEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(37.2599665470065, 127.0446888947659)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(37.2599665470065, 127.0446888947659)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명의 첫 데이트 장소',2)`;
+            })
+        }
+        function yoonEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(35.542497431946614, 129.3409433651261)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(35.542497431946614, 129.3409433651261)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명이 태어난 곳',2)`;
+            })
+        }
+        sungwunEasterEgg();
+        yejinEasterEgg();
+        jhEasterEgg();
+        yoonEasterEgg();
         function makeSearchmodalGetName(name, state){
           let searchboxname = document.querySelector('.search_font')
           let firstSearchModal = document.querySelector('.first_modal_location')
@@ -126,6 +193,7 @@
               `<div class="first_search_modal">
                 <span class="material-icons search_scope">search</span>
                 <span class="search_font">목적지를 검색하세요</span>
+                <img class="kumapIcon" src="https://blogfiles.pstatic.net/MjAyMjA4MThfMTIz/MDAxNjYwNzUxMDIxMzcy.rB9fHVptpu9tgY3-d67qXXMnIeCAJXgVXRz9LibRRNMg.NYk5kR9qZAOhD13otCWU27yY7poMuYT4juSK2ALgAkcg.PNG.whoy259/KakaoTalk_20220817_010207150_01.png">
               </div>`
           }
           if(state === 1){
@@ -133,6 +201,15 @@
             `<div class="justname">
               <span class="search_font" style="color: rgba(0,0,0,1)">${name}</span>
             </div>`
+          }
+          if(state === 2){
+            firstSearchModal.innerHTML = 
+            `<div class="justname">
+              <span class="search_font" style="color: rgba(0,0,0,1)">${name}</span>
+            </div>`
+            setTimeout(function(){
+	            location.reload();
+	          },3000);
           }
           searchboxname.innerText = name
         }
@@ -164,7 +241,7 @@
           <div class="bar"></div>
           <div class="button_loc search_btn" style="cursor:pointer;">
             <img src="{% static './images/location.png' %}" class="locationImage">
-            <span id="from_building">출발지를 입력해주세요!</span>
+            <span id="from_building">출발지를 입력해주세요</span>
           </div>
           <div class="button_loc">
             <img src="{% static './images/location.png' %}" class="locationImage">
@@ -200,7 +277,7 @@
       function naver_please(){
         let fromBuildingName = document.getElementById('from_building').innerText
         let toBuildingName = document.getElementById('to_buliding_name').innerText
-        if(fromBuildingName==='출발지를 입력해주세요!'){
+        if(fromBuildingName==='출발지를 입력해주세요'){
           return;
         }
         else{
@@ -382,7 +459,7 @@
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMjQ5/MDAxNjYwNDUxNzk4Mjg0.P3alLMcB6BDrgMnD2wfDDepGxs9MYa_lfDzMOglhMBgg.ZdZhg13OEMWqW4eyENP7Jfj8tBF6rRPqs8seDnAEVJcg.PNG.ahrefhoo/Printer_24px.png?type=w966";
           }
           else if (kind == 6){
-            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTQ0/MDAxNjYwNDU0NDEyODI1.MmoryyXYbd3qd5n8V-jWj1P_ko5ZZYBD6XOlMVTXHY4g.b9HQQEo89Qghj8jhECEsMhY7GrPEAzJturC8pmA4WVog.PNG.ahrefhoo/Location_24px.png?type=w966";
+            imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966";
           }
           else if (kind == 7){
             imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTRfMTE5/MDAxNjYwNDUxNzk4MTgz.uztbypCmZrUcUDMwR8wqyZGlmmfj5MdLB3Qt1Sd9bc4g.iQ_ohRT-s9SFUmwgxzJ55JRFnGjvOXpIuPwTS3G5e9og.PNG.ahrefhoo/One-stop_24px.png?type=w966"

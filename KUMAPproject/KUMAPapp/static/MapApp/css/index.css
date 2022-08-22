@@ -301,3 +301,8 @@
   -webkit-filter: invert(100%);
   filter: invert(100%);
   }
+
+  .kumapIcon{
+    width: 52px;
+    height: 52px;
+  }

@@ -166,9 +166,25 @@
             location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명의 첫 데이트 장소',2)`;
             })
         }
+        function yoonEasterEgg(){
+          var imageSrc = "https://postfiles.pstatic.net/MjAyMjA4MTdfMTA3/MDAxNjYwNjc1NDUzNjYy.h3QJbB44GYpA-Kc2utadHDFeM79aTqmFDrddoy572Ysg.5drS6FZD-EVNrM7Xh-SeRJN5UE38SdKwDRBjsGHq9s0g.PNG.ahrefhoo/%ED%98%B8%EB%9E%91%EC%9D%B4%EB%A7%88%EC%BB%A4.png?type=w966"; 
+            var imageSize = new kakao.maps.Size(35, 35);
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng=new kakao.maps.LatLng(35.542497431946614, 129.3409433651261)
+          var marker = new kakao.maps.Marker({
+                map: map, // 마커를 표시할 지도
+                position: latlng, // 마커를 표시할 위치
+                image : markerImage // 마커 이미지 
+            });
+          kakao.maps.event.addListener(marker, 'click', function(mouseEvent) { 
+            latlng = new kakao.maps.LatLng(35.542497431946614, 129.3409433651261)
+            location.href = `javascript:setZoomRange(${latlng.getLat()}, ${latlng.getLng()}); makeSearchmodalGetName('개발자 중 한 명이 태어난 곳',2)`;
+            })
+        }
         sungwunEasterEgg();
         yejinEasterEgg();
         jhEasterEgg();
+        yoonEasterEgg();
         function makeSearchmodalGetName(name, state){
           let searchboxname = document.querySelector('.search_font')
           let firstSearchModal = document.querySelector('.first_modal_location')
@@ -225,7 +241,7 @@
           <div class="bar"></div>
           <div class="button_loc search_btn" style="cursor:pointer;">
             <img src="{% static './images/location.png' %}" class="locationImage">
-            <span id="from_building">출발지를 입력해주세요!</span>
+            <span id="from_building">출발지를 입력해주세요</span>
           </div>
           <div class="button_loc">
             <img src="{% static './images/location.png' %}" class="locationImage">
@@ -261,7 +277,7 @@
       function naver_please(){
         let fromBuildingName = document.getElementById('from_building').innerText
         let toBuildingName = document.getElementById('to_buliding_name').innerText
-        if(fromBuildingName==='출발지를 입력해주세요!'){
+        if(fromBuildingName==='출발지를 입력해주세요'){
           return;
         }
         else{

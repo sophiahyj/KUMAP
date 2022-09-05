@@ -27,6 +27,7 @@
       <div class="wrapper hidden" id="search_modal_1">
             <div class="searchBox">
                 <div class="header">
+                    <img src="{% static './images/close_button.png' %}" class="closeButton" onclick="closeFirstSearchModal()">
                     <h2>목적지 검색</h2>
                     <input onkeyup="filter()" type="text" id="value" placeholder="목적지를 입력해주세요.">
                 </div>
@@ -43,6 +44,7 @@
         <div class="wrapper hidden" id="search_modal_2">
             <div class="searchBox">
                 <div class="header">
+                  <img src="{% static './images/close_button.png' %}" class="closeButton" onclick="closeSecondSearchModal()">
                     <h2>출발지 검색</h2>
                     <input onkeyup="filter2()" type="text" id="value2" placeholder="출발지를 입력해주세요.">
                 </div>
@@ -220,6 +222,16 @@
 	          },3000);
           }
           searchboxname.innerText = name
+        }
+        function closeFirstSearchModal(){
+          let big_Modal_1 = document.getElementById('search_modal_1');
+          const clickedClass = "hidden";
+          big_Modal_1.classList.toggle(clickedClass)
+        }
+        function closeSecondSearchModal(){
+          let big_Modal_1 = document.getElementById('search_modal_2');
+          const clickedClass = "hidden";
+          big_Modal_1.classList.toggle(clickedClass)
         }
         function hiddenToggle1(pk,lat,lon,name){
           let big_Modal_1 = document.getElementById('search_modal_1')
@@ -551,7 +563,14 @@
       function btn_loc(){
         let searching=document.querySelector('.search_btn')
         searching.addEventListener('click',()=>{
-          hiddenToggle('a')
+          //hiddenToggle('a')
+          let big_Modal_2 = document.getElementById('search_modal_2')
+          const clickedClass = "hidden";
+        if (big_Modal_2.classList.contains(clickedClass)) {
+          big_Modal_2.classList.remove(clickedClass);
+        } else {
+          big_Modal_2.classList.add(clickedClass);
+        }
         })
       }
       function filter(){

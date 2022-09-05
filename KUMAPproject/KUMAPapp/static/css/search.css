@@ -43,6 +43,19 @@
   #value:focus{
     outline: none;
   }
+  #value2{
+    border: none;
+    background: rgb(240, 238, 238);
+    padding: 10px;
+    font-size: 18px;
+    width: 80%;
+    margin-top: 10px;
+    border-radius: 6px;
+    color: black;
+  }
+  #value2:focus{
+    outline: none;
+  }
 
 /* 선택지 창 */
   .choice{
@@ -53,6 +66,11 @@
     padding: 2vh 5% 10vh 5%;
   }
   .item{
+    margin: 3% 0px;
+    display: flex;
+    align-items: center;
+  }
+  .item2 {
     margin: 3% 0px;
     display: flex;
     align-items: center;

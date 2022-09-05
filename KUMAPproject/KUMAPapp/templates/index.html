@@ -44,11 +44,11 @@
             <div class="searchBox">
                 <div class="header">
                     <h2>출발지 검색</h2>
-                    <input onkeyup="filter()" type="text" id="value" placeholder="출발지를 입력해주세요.">
+                    <input onkeyup="filter2()" type="text" id="value2" placeholder="출발지를 입력해주세요.">
                 </div>
                 <div class="choice">
                     {% for building in buildingList %}
-                    <div class="item" onclick="hiddenToggle('{{building.building_name}}')">
+                    <div class="item2" onclick="hiddenToggle('{{building.building_name}}')">
                         <span id="select_building" class="name" style="cursor:pointer;"> {{building.building_name}} </span>
                     </div>
                     {% endfor %}
@@ -285,7 +285,7 @@
       function naver_please(){
         let fromBuildingName = document.getElementById('from_building').innerText
         let toBuildingName = document.getElementById('to_buliding_name').innerText
-        if(fromBuildingName==='출발지를 입력해주세요'){
+        if(fromBuildingName==='출발지를 입력해주세요' || fromBuildingName===toBuildingName){
           return;
         }
         else{
@@ -560,6 +560,22 @@
         
                 value = document.getElementById("value").value.toUpperCase();
                 item = document.getElementsByClassName("item");
+        
+                for(i=0;i<item.length;i++){
+                  name = item[i].getElementsByClassName("name");
+                  if(name[0].innerHTML.toUpperCase().indexOf(value) > -1){
+                    item[i].style.display = "flex";
+                  }else{
+                    item[i].style.display = "none";
+                  }
+                }
+              }
+              function filter2(){
+        
+                var value, name, item, i;
+        
+                value = document.getElementById("value2").value.toUpperCase();
+                item = document.getElementsByClassName("item2");
         
                 for(i=0;i<item.length;i++){
                   name = item[i].getElementsByClassName("name");
